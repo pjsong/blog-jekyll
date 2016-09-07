@@ -1,0 +1,46 @@
+---
+layout: post
+status: publish
+published: true
+title: CoreOS介绍
+author:
+  display_name: wordpress
+  login: wordpress
+  email: pjsong3101@163.com
+  url: ''
+author_login: wordpress
+author_email: pjsong3101@163.com
+wordpress_id: 71
+wordpress_url: http://oursmedia.net/wordpress/?p=71
+date: '2015-12-11 21:51:49 +0000'
+date_gmt: '2015-12-11 13:51:49 +0000'
+categories:
+- 翻译文章
+tags:
+- cloud host
+- cloud technology
+- 云主机
+- 云服务
+comments: []
+---
+<p>作用:管理集群环境下的容器化应用,不同基础架构下的分布式组件.<br />
+<a href="https:&#47;&#47;www.digitalocean.com&#47;community&#47;tutorials&#47;an-introduction-to-coreos-system-components" target="_blank">点击进入<&#47;a>原文地址：<br />
+基本概念:CoreOS:<br />
+CoreOS是一个linux的发布版本,目的是让各种基础架构下的大型部署易于管理.基于chromeOS，CoreOS只维护一个轻量级的主机系统，用Docker容器来管理所有的应用。这个系统能提供进程隔离，允许应用在集群中轻松转移。<br />
+主机系统主要根据集群和容器化来设计。整个CoreOS一个包管理器都没有，所有的应用都是作为Docker容器来运行，可以支持隔离，迁移，外部的管理。<br />
+启动时，CoreOS读入一个cloud-config的配置来初始化，使主机能与集群其他节点连接起来，启动一些关键的服务配置关键的参数。这也是为什么coreOS能够以创建就能够加入集群的原因。<br />
+一般，cloud-config最少要告诉主机怎样加入集群，并且启动etcd和fleet服务。这三个动作紧密相关，是加入集群的必须步骤。</p>
+<p>etcd。CoreOS使用一个全局分布式的key-value存储etcd<br />
+1，用于存储并在节点之间传递各类配置。这样可以保证配置的一致性。<br />
+2，是一个service的服务声明平台，同时它也是一个服务发现组件，基于它的共享资源，程序可以据此通过查询来调整自己的配置。比如负载均衡器就能够在启动时，通过etcd查找多个后台webserver的IP.每个节点都运行自己的etcd客户端。<br />
+应用如果想要访问etcd获得信息，只要本地连接到etcd接口就行了。所有的数据在每个节点都存在，不管实际存储在那里。每个存储的值也会在整个集群中自动化分发和复制。主数据的选择(Leader election)也是自动进行的。</p>
+<p>要与etcd数据交互，或者使用http&#47;json API（缺省路径：http:&#47;&#47;127.0.0.1:4001&#47;v2&#47;keys&#47;），也可以etcdctl工具。同时，要知道，用httpAPI也可以让docker里面的应用来访问，这就是说单个容器的配置也可以进入etcd存储。</p>
+<p>fleet。用来调度和管理整个集群中的应用。是一个集群级别的初始化系统，用来管理整个集群的进程。这样便于集群的单点管理，配置高可用。他把自己加入集群的每个主机的systemd初始化中。它可以处理服务调度，基于用户的定义限制部署目标。用户可以把整个集群看作一个fleet，而不用管理单个的服务器。某种简单意义上说，集群里面每个节点运行自己的systemd初始化系统，而fleet提供了控制每个节点初始化系统的接口。</p>
+<p>你可以启停或者获取整个集群上的信息，对此Fleet只需要作几件事。他处理进程的分布式机制，因此可以开启不忙的机器上的服务。同时还可以对地理条件指定一些规则：比如某个地点的主机某些服务必须或者不能运行。因为Fleet用Systemd来开启本地进程，每个定义服务的文件都是systemd单元的文件，你可以把这些配置文件一次性传给Fleet,并用他们来管理整个集群。这对于配置高可用很方便：比如你可以要求每台Webserver容器部署在分开的节点上。你可以类似确保Helper容器只部署在运行在父容器上的节点上。<br />
+任何成员节点都可以用fleetctl来管理,</p>
+<p>Docker<br />
+docker是一个使用linux Container(LXC)的容器化系统，使用内核名称空间和cgroups来隔离进程。<br />
+进程隔离能保证应用的运行环境干净，可预测，最主要是使分布式的软件变简单。一个容器应该能够不管操作系统的环境怎样都能运行。在笔记本上能运行的容器也能在一个数据中心集群上一样运行。</p>
+<p>Docker让你可以把软件环境和依赖仪器发布。Docker也能和其他容器一起，作为单独的服务器运行。相对于虚拟化技术，Docker的优点是并不需要模拟整个操作系统，它只需要实现那些应用运行必要的组件。</p>
+<p>CoreOS除了基础安装之外，所有的软件都用Docker容器。就是说，一切都需要运行在容器中。乍看好像不合理，实际上是的集群的管理变简单。CoreOS主要就是设计来在集群层次上的操作，而不是某个服务器。</p>
+<p>如此一来，分布式服务，分布式负载在CoreOS上就简单了。里面的工具和服务可以让你任意启动一个节点进程。Docker让这些服务或者任务都是自容式的节点，而不是在每个节点上去配置。</p>

@@ -1,0 +1,59 @@
+---
+layout: post
+status: publish
+published: true
+title: webpack plus babel
+author:
+  display_name: wordpress
+  login: wordpress
+  email: pjsong3101@163.com
+  url: ''
+author_login: wordpress
+author_email: pjsong3101@163.com
+wordpress_id: 213
+wordpress_url: http://oursmedia.net/wordpress/?p=213
+date: '2016-06-08 14:13:57 +0000'
+date_gmt: '2016-06-08 06:13:57 +0000'
+categories:
+- 实施笔记
+tags: []
+comments: []
+---
+<p>https:&#47;&#47;www.twilio.com&#47;blog&#47;2015&#47;08&#47;setting-up-react-for-es6-with-webpack-and-babel-2.html</p>
+<p>1, <a href="http:&#47;&#47;webpack.github.io&#47;">Webpack<&#47;a>&nbsp;打包工具,&nbsp;<a href="https:&#47;&#47;babeljs.io&#47;">Babel<&#47;a>&nbsp; 将ES6功能代码转成ES5代码。</p>
+<p>1，进入项目目录，执行npm init初始化目录和文件package.json</p>
+<p>2,</p>
+<p><span class="crayon-e">npm <&#47;span><span class="crayon-v">install<&#47;span> <span class="crayon-o">--<&#47;span><span class="crayon-i">save<&#47;span>&nbsp;<span class="crayon-v">react<&#47;span><span class="crayon-sy">@<&#47;span><span class="crayon-cn">0.14.7<&#47;span></p>
+<div id="crayon-5755bc64ab217467750922-2" class="crayon-line crayon-striped-line"><span class="crayon-e">npm <&#47;span><span class="crayon-v">install<&#47;span> <span class="crayon-o">--<&#47;span><span class="crayon-e">save <&#47;span><span class="crayon-v">react<&#47;span><span class="crayon-o">-<&#47;span><span class="crayon-v">dom<&#47;span><span class="crayon-sy">@<&#47;span><span class="crayon-cn">0.14.7<&#47;span><&#47;div></p>
+<div class="crayon-line crayon-striped-line">
+<div id="crayon-5755bc64ab229140735957-1" class="crayon-line"><span class="crayon-e">npm <&#47;span><span class="crayon-v">install<&#47;span> <span class="crayon-o">--<&#47;span><span class="crayon-v">save<&#47;span><span class="crayon-o">-<&#47;span><span class="crayon-e">dev <&#47;span><span class="crayon-v">webpack<&#47;span><span class="crayon-sy">@<&#47;span><span class="crayon-cn">latest<&#47;span><&#47;div></p>
+<div id="crayon-5755bc64ab229140735957-2" class="crayon-line crayon-striped-line"><span class="crayon-e">npm <&#47;span><span class="crayon-e">install <&#47;span><span class="crayon-v">webpack<&#47;span><span class="crayon-o">-<&#47;span><span class="crayon-v">dev<&#47;span><span class="crayon-o">-<&#47;span><span class="crayon-v">server<&#47;span><span class="crayon-sy">@latest<&#47;span>&nbsp;<span class="crayon-o">-<&#47;span><span class="crayon-v">g<&#47;span><&#47;div><br />
+<&#47;div></p>
+<div class="crayon-line crayon-striped-line">
+<div id="crayon-5755bc64ab23b811745721" class="crayon-syntax crayon-theme-github crayon-font-consolas crayon-os-mac print-yes notranslate crayon-expanded crayon-toolbar-visible" data-settings=" minimize scroll-mouseover expand">
+<div class="crayon-main">
+<table class="crayon-table">
+<tbody>
+<tr class="crayon-row">
+<td class="crayon-code">
+<div class="crayon-pre">
+<div id="crayon-5755bc64ab23b811745721-1" class="crayon-line"><span class="crayon-e">npm <&#47;span><span class="crayon-v">install<&#47;span> <span class="crayon-o">--<&#47;span><span class="crayon-v">save<&#47;span><span class="crayon-o">-<&#47;span><span class="crayon-e">dev <&#47;span><span class="crayon-v">babel<&#47;span><span class="crayon-o">-<&#47;span><span class="crayon-v">loader<&#47;span><span class="crayon-sy">@<&#47;span><span class="crayon-cn">6.2.1<&#47;span><&#47;div></p>
+<div id="crayon-5755bc64ab23b811745721-2" class="crayon-line crayon-striped-line"><span class="crayon-e">npm <&#47;span><span class="crayon-v">install<&#47;span> <span class="crayon-o">--<&#47;span><span class="crayon-v">save<&#47;span><span class="crayon-o">-<&#47;span><span class="crayon-e">dev <&#47;span><span class="crayon-v">babel<&#47;span><span class="crayon-o">-<&#47;span><span class="crayon-v">core<&#47;span><span class="crayon-sy">@<&#47;span><span class="crayon-cn">6.4.5<&#47;span><&#47;div></p>
+<div id="crayon-5755bc64ab23b811745721-3" class="crayon-line"><span class="crayon-e">npm <&#47;span><span class="crayon-v">install<&#47;span> <span class="crayon-o">--<&#47;span><span class="crayon-v">save<&#47;span><span class="crayon-o">-<&#47;span><span class="crayon-e">dev <&#47;span><span class="crayon-v">babel<&#47;span><span class="crayon-o">-<&#47;span><span class="crayon-v">preset<&#47;span><span class="crayon-o">-<&#47;span><span class="crayon-v">es2015<&#47;span><span class="crayon-sy">@<&#47;span><span class="crayon-cn">6.3.13<&#47;span><&#47;div></p>
+<div id="crayon-5755bc64ab23b811745721-4" class="crayon-line crayon-striped-line"><span class="crayon-e">npm <&#47;span><span class="crayon-v">install<&#47;span> <span class="crayon-o">--<&#47;span><span class="crayon-v">save<&#47;span><span class="crayon-o">-<&#47;span><span class="crayon-e">dev <&#47;span><span class="crayon-v">babel<&#47;span><span class="crayon-o">-<&#47;span><span class="crayon-v">preset<&#47;span><span class="crayon-o">-<&#47;span><span class="crayon-v">react<&#47;span><span class="crayon-sy">@<&#47;span><span class="crayon-cn">6.3.13<&#47;span><&#47;div><br />
+<&#47;div><&#47;td><br />
+<&#47;tr><br />
+<&#47;tbody><br />
+<&#47;table><br />
+<&#47;div><br />
+3,根目录创建hello.jsx, world.jsx, index.html</p>
+<p>4，为webpack指定entrypoint文件，根据配置的loader获取文件，创建main.js</p>
+<p>5,webpack.config.js,告诉webpack我们的entrypoint文件和loader是babel</p>
+<div id="fb-root" class=" fb_reset">
+<p>&nbsp;webpack-dev-server --progress --colors</p>
+<div id="fb-root" class=" fb_reset">&nbsp;http:&#47;&#47;localhost:8080&#47;webpack-dev-server&#47;<&#47;div><br />
+<&#47;div><br />
+<&#47;div></p>
+<div id="fb-root" class=" fb_reset"><&#47;div></p>
+<div class=" fb_reset">webpack <a href="http:&#47;&#47;zhaoda.net&#47;webpack-handbook&#47;configuration.html">参考1<&#47;a>&nbsp; <a href="https:&#47;&#47;webpack.github.io&#47;docs&#47;">参考2<&#47;a><&#47;div><br />
+<&#47;div></p>

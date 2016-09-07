@@ -1,0 +1,114 @@
+---
+layout: post
+status: publish
+published: true
+title: OFBIZ产品介绍---翻译
+author:
+  display_name: wordpress
+  login: wordpress
+  email: pjsong3101@163.com
+  url: ''
+author_login: wordpress
+author_email: pjsong3101@163.com
+wordpress_id: 37
+wordpress_url: http://oursmedia.net/wordpress/?p=37
+date: '2015-12-06 17:23:39 +0000'
+date_gmt: '2015-12-06 09:23:39 +0000'
+categories:
+- 翻译文章
+tags: []
+comments: []
+---
+<p>demo地址,用户名&#47;密码 admin&#47;ofbiz</p>
+<p><a href="http:&#47;&#47;ofbiz.apache.org&#47;apache-ofbiz-project-overview.html">原文地址<&#47;a></p>
+<p>OFBiz是一个构建在通用数据、逻辑，处理组件下的松耦合企业应用架构。OFBiz的工具和体系架构可以高效开发和维护企业应用，方便定制和扩展。基于Apache License Version 2,人们可以自己订制扩展出售自己的系统。</p>
+<p>这些方面不受限制，因为我们认为这对高效使用这类软件是必要的。不像GPL，Apache License Version 2的license，你在上面做的变更不必发布为开源。当然，贡献一些改进修复等到核心项目有好处，但是有些变更设计到版权或者机密信息不能公开发布，因此使用的license是Apache License Version 2。关于license信息参考<a href="http:&#47;&#47;www.opensource.org">OSI<&#47;a>。</p>
+<p>这种开源模式的另外一个好处是我们能持续收到用户的反馈。无数的bug修复，改进建议，最佳业务实践建议等都来自OFBiz的用户。许多伟大的特性都来自于一些关于项目的评论或者建议，我们每天都有20-30封邮件。</p>
+<p>为确保我们的功能有用且最新，我们常常研究组件的公共标准。这样，我们可以支持并使用通用的术语，支持广泛的特性和选择。同时，也为未来与其他系统的弹性通信打开了一扇门。</p>
+<p>这个应用及其组件，提供了一个广泛且极具弹性的基础。对于管理公司、产品、财务、客服以及内部资产管理提供了巨大的方便。</p>
+<p>&nbsp;</p>
+<h3>主要应用组件<&#47;h3><br />
+OFBiz的功能，希望能包含自动化处理企业信息的所有方面。在开发设计的早期，我们搜寻过能成为系统基础的好的数据模型。</p>
+<p>找到<ins>The Data Model Resource Book, Revised Edition, Volumes 1 and 2<&#47;ins> by Len Silverston之前，我们研究其他的ERP和CRM系统，查找各种统一且规范的书籍。在翻译这些数据逻辑模型到弹性规范的物理模型之后几周，我们就有了自己的初始系统结构。那时起这个初始数据模型经过了几百个版本和优化。因为系统架构的弹性化，更改数据模型非常容易，这对于项目的持续改进是必要的。</p>
+<p>&nbsp;</p>
+<p>顶层的应用和应用逻辑的组织方式在数据模型上几乎一样。一旦一个层次的系统组织好了，到另外一个层次很容易。以下是一个主要功能的简单概览。这些中的许多都是已经有了的功能，数据元素也能覆盖系统的需要。当以后的功能有实现时，我们将持续优化数据模型，但主要的数据元素定义不变。因此记住，只是大多数，不是全部，这里描述的功能都已经有了实现。</p>
+<p><strong>公共数据实体组件common data<&#47;strong></p>
+<p>包含地理位置，度量单位，状态编码，枚举等。大多数都是系统安装时候引入的种子数据，基本上都基于ISO或者其他标准，不需要动。</p>
+<p>内容content</p>
+<p>内容实体用来获取数据资源，并把它们组织成通用的内容和知识。包含许多概念比如：</p>
+<p>1，信息和组织的分离，使得数据可以在各种内容组织下使用，内容的弹性组织。内容的弹性组织，包括图形，属性，列表，模板等。</p>
+<p>2，内容和数据资源的元数据规范可以用来隐含或明确的描述信息。</p>
+<p>3，独立的内容片断可以是各种标准MIME描述的文本或者二进制格式和编码。</p>
+<p>一旦有了这类信息的通用维护工具，更高级的，用于生成结构或者元数据的工具比如基于关键字，基于源数据，智能搜索，文本挖掘，就可以拿来用于管理企业文档和知识库。</p>
+<p>内容实体同时包含基于web的内容，如页面，交互内容，每个发送到站点的请求信息等。这些对于追踪用户在程序里面做什么很有用。</p>
+<p>&nbsp;</p>
+<h4>Security安全组件<&#47;h4><br />
+用来控制系统各个部分的访问，包括用户登录帐号，登陆审计署据，权限数据等。通过Party和Party的关联实体，可以增加特定角色的各种其他数据的安全限制。比如，一个用户有浏览和修改所有产品的权限，其他某个用户只有浏览或者修改自己商户类别下的产品数据。。</p>
+<p><strong>Party<&#47;strong></p>
+<p>Party可以使个人或者一组Party。PartyGroup可能是一个公司，也可能是公司内部的组织，供应商，客户等等。关于Party的描述直接与Party实体相关。</p>
+<p>一种相关的数据类型就是通信信息，比如邮编，电话，邮箱，url，另一个是Party的角色如客户，供应商，雇员，经理，商家等。一般单个party将与系统里面各个部分的许多不同角色交互。</p>
+<p>Party里面还有一类信息就是关Party之间的通讯和协议。这些包括关系管理，问题信息。这些实体与WordEffort实体一起使用，来计划和追踪这些问题的研究方案。</p>
+<p>&nbsp;</p>
+<h4>Product产品<&#47;h4><br />
+产品实体包含销售产品和公司内部使用的产品，可以使商品和服务。商品有很多类型，包括原材料，小模块，还有成品。产品信息包含产品的描述，但并不用来描述具体的物件。这些具体产品的描述信息是由库存来完成的。一个库存物件包含特定商品的位置信息，状态，序列号，当前库存量等。</p>
+<p>产品用类别来组织。单个产品可以使用多个类别。类别本身也可以是多个类别下的子类别，也可以有多个子类别。产品也可以与其他产品关联，形成相关产品，组合产品，推广打包销售等。</p>
+<p>类别可以与其他类别关联。一个产品类别本质上是某个特定商品集合的起始点。促销和库存管理选项与每个类别关联，这样不同的销售渠道即使在同样的商品集合上也是不同的行为。</p>
+<p>为了对产品常用的不同特征进行弹性建模，有一些定义产品特征类型的实体。比如，这是一件大号蓝色衬衫，尺寸和颜色就是特征，大号和蓝色是真实特征。</p>
+<p>单个产品有多个价格，也可能有多个成本。不同价格可以是根据不同的货币类型，不同的商店，不同的日期等</p>
+<p>这里可以很好的引入广泛使用的生效日期。有两个字段描述，开始日期和持续日期。在产品价格例子中，这两个字段用来表示什么时候价格生效，失效。这可以用来跟踪价格变化，有效管理临时促销价格。</p>
+<p>除了明确制定价格，还有一些实体和逻辑用来产生价格规则。比如，你创建一个规则，在指定时间内把某个类别下的所有产品放入促销。或者，你用一个简单规则给某个客户或者客户群体特价。</p>
+<p>Order订单</p>
+<p>订单用来管理销售、采购订单的信息，以及引起订单生成的信息。比如，客户请求一个特定产品或者特征，可以被订单中的请求实体追踪到。</p>
+<p>可追踪以及变成需求的请求，可用来创建一个工作任务。一旦需求生成，会产生一个配额，如果客户接受，就会生成一个订单。一旦订单完成，订单里就会生成发票，发票是会计实体包的一部分。</p>
+<p>订单包括订单头，订单行，以及订单详细描述。有许多信息与订单头或者订单行相关。比如运输地址，运输选择等。</p>
+<p>&nbsp;</p>
+<p>详细信息（Adjustment）包含非商品或者服务的一些价格调整信息。比如税收，运费，折扣，附加费等。Adjustment机可以是简单金额，也可以是基于数量，或者整单，或者相关订单行的金额。税收和运费是特定的用例，每个Adjustment可以指定是否应在Subtotal中包含税收，运费。</p>
+<p>支付偏好在订单创建时可以记下来，发票生成后，自动处理支付。这对于信用卡或其他电子手段来说很实用。如果没有支付偏好，就用标准的发票和出单处理。</p>
+<p>&nbsp;</p>
+<h4>Facility<&#47;h4><br />
+一个Facility是某栋建筑，或物理地址。如仓库，商店，办公楼，独立房间，装货点等。一般一个facility有关联的通信方式。</p>
+<p>Facility可以组成群，群可以包含在其他群。比如，一个群包含连锁店，街道，地区，特殊群（用来市场或价格）。</p>
+<p>库存单位可以与一个facility关联，甚至是与facility里面的特定地点关联。facility的位置可以独立于库存单元来组织管理。</p>
+<p>Party可以与Facility关联来表示某个人工作的地方，组织等。</p>
+<p>&nbsp;</p>
+<h4>运输实体Shipment<&#47;h4><br />
+运输实体用来追踪库存进出的运输信息。</p>
+<p>一个运输包含多个运输单位，每个运输单位就像一个订单行，包含某个商品的数量。当运输到达后，与采购订单协调，这个协调信息在运输收据(Shipment Receipt)实体管理.</p>
+<p>&nbsp;</p>
+<p>当库存单元发出，它就与某个PickList关联起来，pickList根据多个运输信息准备出来，用于高效规划检货路径。</p>
+<p>运输包裹(Shipment Packages)可以代表一个运输单元创建。单个运输单元包含多个运输项(Shipment Items)。其他运输的项也假定到达同一个目的地。</p>
+<p>运输路径实体(Shipment Route entities)用来分割运输路程到多个路径段。一个路径段可能是物流，另一个运输段可能是私有的运输队伍。</p>
+<p>&nbsp;</p>
+<h4>Accounting<&#47;h4><br />
+记账实体根据老式原则方式组织，比如双通道记账。</p>
+<p>The Accounting entities are organized according to age old and generally accepted principles such as double-entry accounting, a General Ledger with hierarchical accounts, journals and posting of transactions and corresponding entries. The structure is primarily based on the OMG GL standard and the work that was done on an AR&#47;AP extension of the OMG GL standard. This correlates well with other standards such as ebXML and OAGIS.</p>
+<p>The Accounting entities are structured such that accounts for multiple organizations can be managed. The multiple organizations could be multiple companies, or departments or other organizations within a company. Each Organization can have various GL Accounts associated with it so that it can operate with its own subset of the Master Chart of Accounts. Each Organization can also have its own set of Journals for flexibility, even though the use of Journals should be as minimal as possible in favor of allowing the system to automatically create and post transactions based on business events triggered by standard procedures and documents such as purchase and sales orders, invoices, inventory transfers, payments, receipts, and so forth.</p>
+<p>There are also entities in place for budgeting and the reconciliation of budgets against actual GL Account balances for a specific fiscal period. Oh yeah, there are also entities used to track custom Fiscal Periods and other entities to keep summary results for accounts in specific periods.</p>
+<p>Entities to track Fixed Assets are also part of the Accounting entity package. This includes depreciation information in addition to maintenance, scheduling of Fixed Assets (along with the Work Effort entities), and so forth.</p>
+<h4>Marketing<&#47;h4><br />
+用来追踪市场活动信息。如联系列表(邮件，电话)，追踪编码。追踪编码主要用在自动化系统，记录客户那里来。以及广告，合作方，下属机构特定市场活动的效果。</p>
+<p><strong>Work Effort<&#47;strong></p>
+<p>可以是任务，项目，项目阶段，待处理事项，日历事项，甚至工作流。</p>
+<p>注意：OBiz不用工作流引擎。用的是EDA和ECA来驱动工作流。</p>
+<p>同时还有其他实体。用来追踪timesheets，实施WorkEffort的支付级别。其他资源入固定资产工作场所等也可以记录。</p>
+<p>A Work Effort can be one of many things including a task, project, project phase, to-do item, calendar item, or even a Workflow Activity.</p>
+<p><b>Notice<&#47;b> : OFBiz gave up on Workflow Engines. Shark was implemented last but never really used in OFBiz. Instead of using a Workflow Engine, OFBiz uses an <a class="external-link" href="http:&#47;&#47;en.wikipedia.org&#47;wiki&#47;Event_Driven_Architecture" rel="nofollow">Event Driven Architecture (EDA)<&#47;a> and ECAs (SECA, EECA, MECA) are used in OFBiz to drive the Workflow. ECA is the acronym of Event Condition Action. SECAs are for Services (triggered on services conditions), EECA are for Entity (triggered on entities conditions), MECAs are for Mail.</p>
+<p>There are also entities in the Work Effort entity package for keeping track of timesheets and the pay rate of specific Parties performing Work Efforts. In addition various other resources can be tracked such as Fixed Assets, Facilities, et cetera.</p>
+<p>When Work Efforts are used for manufacturing or other modification of Products the Products and Inventory Items consumed and produced by the specific Work Effort can be tracked.</p>
+<h4>Human Resources<&#47;h4><br />
+记录职位，职责，技能，合同到期，福利，培训，支付级别，支付清单偏好，绩效评估，简历，申请记录等。</p>
+<p>The Human Resources entities are used to keep track of positions, responsibilities, skills, employment, termination, benefits, training, pay grades and payroll preferences, performance reviews, resumes and applications, and other Human Resources related information.</p>
+<h3>Architecture and System Organization<&#47;h3><br />
+Architecture is really just a fancy word for the organization and composition of application components. There are many different "tools" available as part of Java, J2EE and the OFBiz Core Framework that can be used together to efficiently and effectively organize data and business logic, to provide interfaces to other systems, and to create user interfaces for humans to interact with the system.</p>
+<h4>Entities and Services<&#47;h4><br />
+OFBiz中最基本的组件。一个实体Entity是一个包含任意个字段的关系数据结构，并可以与其他entity关联。Basic entity对应实际数据库结构，还有一种view-entity用来创建虚拟实体。这些构子用来在程序中展示或使用。</p>
+<p>许多架构中，但但数据持久曾就有上百万行代码。用实体引擎，被浓缩只有几千行的xml数据定义，没有经验的程序员也可以用这个工具高效工作。</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>A Service is a simple process that performs a specific operation. A service definition is used to define the input and output parameters that the service consumes and produces. Data passed to the service can be automatically validated before the actual logic is called using this definition. After a service is run the results can be validated in the same way.</p>
+<p>Other services can be run automatically at different points of the running of a service by using Event-Condition-Action (ECA) rules to denote what other services should be called and under what circumstances. This allows logic to be extended without modifying the original logic and allows the system to be organized cleanly such that each service performs one simple, specific task.</p>
+<p>Services can be implemented in a number of different ways to make it easier for engineers to match the tools available to the task at hand. It also makes it easy to keep track of the logic components in the system which may exists in hundred of different files and even on different computers used inside the company or computers of a partnering company.</p>
+<h4>Web Framework and XML Mini-Languages<&#47;h4><br />
+用于web开发和xml处理。</p>
+<p>&nbsp;</p>
+<h3><&#47;h3></p>

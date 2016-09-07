@@ -1,0 +1,77 @@
+---
+layout: post
+status: publish
+published: true
+title: 0530--javascript
+author:
+  display_name: wordpress
+  login: wordpress
+  email: pjsong3101@163.com
+  url: ''
+author_login: wordpress
+author_email: pjsong3101@163.com
+wordpress_id: 193
+wordpress_url: http://oursmedia.net/wordpress/?p=193
+date: '2016-06-01 00:20:17 +0000'
+date_gmt: '2016-05-31 16:20:17 +0000'
+categories:
+- 实施笔记
+tags: []
+comments: []
+---
+<p>&nbsp;</p>
+<p>http:&#47;&#47;stackoverflow.com&#47;questions&#47;572897&#47;how-does-javascript-prototype-work</p>
+<p>&nbsp;</p>
+<p><img class="alignnone" src="http:&#47;&#47;i.stack.imgur.com&#47;2tGyY.jpg" alt="" width="559" height="346" &#47;></p>
+<p><img class="alignnone" src="http:&#47;&#47;i.stack.imgur.com&#47;rcGmc.png" alt="" width="588" height="413" &#47;></p>
+<p>1, 两种类型的对象。object, function(也成为constructor）, 其余都是基本类型如string, number, boolean</p>
+<p>function对象定义:</p>
+<p>var Object= new Function ([native code for object Object])</p>
+<p>var String= new Function ([native code for object String])</p>
+<p>var Number= new Function ([native code for object Number])</p>
+<p>var Boolean= new Function ([native code for object Boolean])</p>
+<p>var Array= new Function ([native code for object Array])</p>
+<p>var RegExp= new Function ([native code for object RegExp])</p>
+<p>var Function= new Function ([native code&nbsp; for object Function])</p>
+<p>var UserDefinedFunction= new Function ("user defined code")</p>
+<p>--------------------------------再new就变成object对象</p>
+<p>var a=new Object() or var a=Object() or var a={} &#47;&#47;Create object of type Object</p>
+<p>var a=new String() &#47;&#47;Create object of type String</p>
+<p>var a=new Number() &#47;&#47;Create object of type Number</p>
+<p>var a=new Boolean() &#47;&#47;Create object of type Boolean</p>
+<p>var a=new Array() or var a=Array() or var a=[]&nbsp; &#47;&#47;Create object of type Array</p>
+<p>var a=new RegExp() or var a=RegExp() &#47;&#47;Create object of type RegExp</p>
+<p>var a=new UserDefinedFunction()</p>
+<p><strong>-------------------------------Object<&#47;strong>,<strong>Array<&#47;strong>&nbsp;and&nbsp;<strong>RegExp <&#47;strong><strong>可以不用<&#47;strong><strong>new<&#47;strong></p>
+<p>var a= Object();</p>
+<p>-----------------------------------------------------------typeof Boolean"function"typeof Boolean()"boolean"typeof new Boolean()"object"</p>
+<p>1, function对象<strong>自动<&#47;strong>包含prototype属性，缺省值为object对象，object对象有constructor属性指向function对象。</p>
+<p>function UserDefinedFunction(){ }；检查UserDefinedFunction.prototype，typeof UserDefinedFunction</p>
+<p>var newObj_1=new UserDefinedFunction()；Object.getPrototypeOf(newObj_1)===UserDefinedFunction.prototype,typeof UserDefinedFunction.prototype==='object'</p>
+<p>2，prototype属性仅在function对象中存在。因为new一个新对象的时候，会自动继承function对象的prototype对象中的属性和方法，并创建一个__prototype__指向function对象的prototype.</p>
+<p>3,__prototype__和prototype不同，前者每个对象都有，后者仅在function对象中存在；前者用于.查找时遍历prototype链查找属性，后者在对象new创建时指定__prototype__应该指向哪里。可以用obj.hasOwnProperty('key') and Object.getOwnPropertyNames(f)避免遍历。前者为对象内部属性，后者为function对象属性</p>
+<p>4,每个对象继承自function对象的prototype. 都有constructor属性，缺省指向创建它的function对象。</p>
+<p>5，function对象的constructor永远是 function Function（）{}。</p>
+<p>6,object对象的constructor是创建它的Function。</p>
+<p>7，每个对象的prototype链最终指向Object.prototype指向null</p>
+<p>&nbsp;</p>
+<p>--------------------------Function ----------------function------------------</p>
+<p>typeof Function === typeof Function.prototype === 'function'</p>
+<p>Function === Function.prototype.constructor ===> <strong>Function() { [native code] }<&#47;strong></p>
+<p>--------------------------Object ----------------function------------------</p>
+<p>Object === Object.prototype.constructor ===> <strong>Object() { [native code] }<&#47;strong></p>
+<p>------------------------Object prototype------------------object---------------------------</p>
+<p>Object.getPrototypeOf(Object.prototype)==null</p>
+<p>Object.prototype===Object.getPrototypeOf(Object.getPrototypeOf(Function))=== Object.getPrototypeOf((new Function()).prototype)===><strong>Object{}<&#47;strong></p>
+<p>--------------------------Function &nbsp;Prototype----------function-----------------------</p>
+<p>Function.prototype === Object.getPrototypeOf(<strong><u>new Function()<&#47;u><&#47;strong>) === Object.getPrototypeOf(<strong>Object<&#47;strong>) === Object.getPrototypeOf(<strong>Function<&#47;strong>) ===> <strong>function() {}<&#47;strong></p>
+<p>Function.prototype.constructor === Function</p>
+<p>&nbsp;</p>
+<p>-----------------------------------Object prototype -------------------</p>
+<p>Object.getPrototypeOf(Function.prototype) === Object.prototype === Object.getPrototypeOf((new Function()).prototype) ===> <strong>Object(){}<&#47;strong></p>
+<p>-----------------------------------new Function() prototype--------object--------------------\</p>
+<p>f=new Function();</p>
+<p>f.prototype === Object.getPrototypeOf(new f())</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>

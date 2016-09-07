@@ -1,0 +1,44 @@
+---
+layout: post
+status: publish
+published: true
+title: HTTPD中的redirect模块---折衷方案
+author:
+  display_name: wordpress
+  login: wordpress
+  email: pjsong3101@163.com
+  url: ''
+author_login: wordpress
+author_email: pjsong3101@163.com
+wordpress_id: 23
+wordpress_url: http://oursmedia.net/wordpress/?p=23
+date: '2015-12-04 11:43:44 +0000'
+date_gmt: '2015-12-04 03:43:44 +0000'
+categories:
+- 实施笔记
+tags: []
+comments: []
+---
+<p><strong>场景：<&#47;strong></p>
+<p>对于站点下的目录比如：oursmedia.net&#47;wordpress,重写为wordpress.oursmedia.net, wordpress下的目录abc重写为wordpress.oursmedia.net&#47;abc.</p>
+<p><strong>方案：<&#47;strong></p>
+<p>编辑内容如下</p>
+<pre class="lang-php prettyprint prettyprinted"><code><span class="typ">#打开重写引擎<br />
+RewriteEngine<&#47;span> <span class="typ">On<br />
+#REMOTE_IDENT 重写条件1，远程主机标志，也就是浏览器里的新地址<&#47;span><br />
+<span class="typ">RewriteCond<&#47;span> <span class="pun">%{<&#47;span><span class="pln">HTTP_HOST<&#47;span><span class="pun">}<&#47;span> <span class="pun">^<&#47;span><span class="pln">wordpress\.oursmedia\.net$<br />
+#重写条件2，REQUEST_URI，The path component of the requested  URI, such as "&#47;index.html"。设置为不重写真正的路径，也就是原路径继续有效。<br />
+<&#47;span><span class="typ">RewriteCond<&#47;span> <span class="pun">%{<&#47;span><span class="pln">REQUEST_URI<&#47;span><span class="pun">}<&#47;span> <span class="pun">!^<&#47;span><span class="str">&#47;wordpress&#47;<br />
+#<&#47;span><&#47;code><code><span class="pln">重写条件3，<&#47;span><&#47;code><code><span class="str">不重写目录，与上面的配置功能类似。可选<br />
+<&#47;span><&#47;code><code><span class="typ">#RewriteCond<&#47;span> <span class="pun">%{<&#47;span><span class="pln">REQUEST_FILENAME<&#47;span><span class="pun">}<&#47;span> <span class="pun">!-<&#47;span><span class="pln">d<br />
+# 不重写文件，避免网站内部使用资源地址被改写。可选<&#47;span><br />
+<span class="typ">#RewriteCond<&#47;span> <span class="pun">%{<&#47;span><span class="pln">REQUEST_FILENAME<&#47;span><span class="pun">}<&#47;span> <span class="pun">!-<&#47;span><span class="pln">f<br />
+<&#47;span><&#47;code><code><span class="str">#重写规则，符合规则的url重写到本地<&#47;span> RewriteRule <em>Pattern<&#47;em> <em>Substitution<&#47;em> [<em>flags<&#47;em>]<br />
+<span class="typ">#RewriteRule<&#47;span> <span class="pun">(.*)<&#47;span> <span class="pun">&#47;<&#47;span><span class="pln">wordpress<&#47;span><span class="pun">&#47;<&#47;span><span class="pln">$1 [L]<br />
+<&#47;span><&#47;code><code><span class="typ">RewriteRule<&#47;span> ^&#47;$ <span class="pun">&#47;<&#47;span><span class="pln">wordpress<&#47;span><span class="pun">&#47;<&#47;span><span class="pln"> [R] </p>
+<p>新增加redirect.conf到&#47;etc&#47;http&#47;conf.d下，拷贝以上内容。能做到把wordpress.oursmedia.net指向wordpress.oursmedia.net&#47;wordpress.<br />
+<&#47;span><&#47;code><&#47;pre></p>
+<pre class="lang-php prettyprint prettyprinted"><code><span class="pln"><strong>缩写标志:<&#47;strong> <strong>[NC]<&#47;strong> nocase,不区分大小写 <strong>[OR]<&#47;strong> 用于连接RewriteCond, 默认是AND <strong>[L]<&#47;strong> last, Stop the rewriting process immediately and don't apply any more rules.马上启用当前的规则，停止重写和应用后面的规则。类似于C语言的Break命令。此命令的背景是规则的处理方法问题：一旦规则匹配并处理，重写的请求马上就被送给URL解析引擎了。如果重写请求已经被处理了，又遇到.htaccess文件或者<Directory>的配置，这个规则会被再次使用。常见情况是某个规则导致了重定向，规则会被再次应用。 <strong>$1或者%1<&#47;strong>:正规表达式的back-referrence. <strong>[R]<&#47;strong> 重定向Redirect<br />
+ <a href="http:&#47;&#47;httpd.apache.org&#47;docs&#47;2.2&#47;rewrite&#47;flags.html#flag_l">apache说明 </p>
+<p><&#47;a><b>其他<&#47;b>： 1， 如果域名解析失败，添加cname, 将域名服务器指向本机。<&#47;span><&#47;code><code><span class="pln"><a href="https:&#47;&#47;wiki.centos.org&#47;TipsAndTricks&#47;ApacheVhostDir" target="_blank">CENTOS官方文档<&#47;a><&#47;span><&#47;code><&#47;pre></p>
+<pre class="lang-php prettyprint prettyprinted"><&#47;pre></p>

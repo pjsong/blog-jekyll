@@ -1,0 +1,730 @@
+---
+layout: post
+status: publish
+published: true
+title: themeleaf模板引擎
+author:
+  display_name: wordpress
+  login: wordpress
+  email: pjsong3101@163.com
+  url: ''
+author_login: wordpress
+author_email: pjsong3101@163.com
+wordpress_id: 115
+wordpress_url: http://oursmedia.net/wordpress/?p=115
+date: '2015-12-21 00:34:56 +0000'
+date_gmt: '2015-12-20 16:34:56 +0000'
+categories:
+- 翻译文章
+tags: []
+comments: []
+---
+<p><a href="http:&#47;&#47;www.thymeleaf.org&#47;doc&#47;tutorials&#47;2.1&#47;usingthymeleaf.html" target="_blank">进入<&#47;a>原文</p>
+<p>1.1 What is Thymeleaf?</p>
+<p>XML&#47;XHTML&#47;HTML5模板引擎，为了显示数据&#47;文本，对模板文件进行一系列转换。主要目的是提供一个格式良好的创建模板的方式。他基于xml标签和attribute在DOM上定义预先设定的逻辑，而不是在模板内部写这些逻辑。<br />
+它的体系架构还允许快速处理模板。这主要靠接戏后文件的智能缓存，降低执行时候的IO操作。<br />
+Out-of-the-box, Thymeleaf allows you to process six kinds of templates, each of which is called a Template Mode:</p>
+<p>1.2 What kind of templates can Thymeleaf process?<br />
+XML<br />
+Valid XML<br />
+XHTML<br />
+Valid XHTML<br />
+HTML5<br />
+Legacy HTML5<br />
+除了Legacy HTML5，其他都是格式良好的xml文件。为了处理Legacy HTML5，TH会首先把文件转换成格式良好的xml文件。<br />
+注意validation仅对xml，xhtml模板起作用。<br />
+不过，除了这些，用户还可以定义自己的模板，只要指定这种模式的解析模板和写入结果的方式即可。这样，不管是不是xml，只要可以建模为DOM树，都可以被TH作为一个模板来处理。</p>
+<p>1.3 Dialects: The Standard Dialect<br />
+TH的Dialects可以完整定义模板中要处理的DOM节点，和怎么处理这些节点。<br />
+应用逻辑到DOM节点的对象叫processor, processor的集合加上额外一些arfifacts就是一个dialect.TH提供的标准dialect足够大部分人用了。这里主要就是标准Dialect.<br />
+大部分processor都是attribute processor.这样让浏览器在引擎处理之前也能显示这些模板文件。因为浏览器会简单忽略掉多出的属性。这点根JSP不同，比如jsp<br />
+<code><br />
+<form:inputText name="userName" value="${user.name}" &#47;><&#47;code><br />
+而TH<br />
+<code><input type="text" name="userName" value="James Carrot" th:value="${user.name}" &#47;><&#47;code><br />
+TH不仅能在浏览器正确显示，还能让我们在里面指定一个attribute的value&ldquo;James Carrot&rdquo;， 当prototype在浏览器静态打开时候显示，在TH处理模板的时候，被替换。因此，设计师和开发人员可以同时编辑一个模板，这个特性叫做&ldquo;自然模板技术&rdquo;。<br />
+1.4 Overall Architecture<br />
+TH核心是一个DOM处理引擎。使用自己的DOM实现而不是标准DOM API，来构建模板的内存里面的树，其后，遍历树上节点，在节点上执行processor，根据配置和传入模板的数据(context)来修改DOM。<br />
+用DOM模板表示使得TH很适合WEB应用。因为web文档通常用对象树表示的，(DOM树就是浏览器内存中的页面表示)。而且，web应用本身的模板不多，文件不大，也不太经常变，TH用内存缓存处理过的模板DOM树使他可以快速处理，因为大部分模板处理操作不需要什么IO了。更多缓存细节参看后面章节。<br />
+不过，这个架构要求相对较大的内存。你不能处理大型xml文件。比如上兆的文件。<br />
+<code><a href="http:&#47;&#47;www.thymeleaf.org&#47;doc&#47;articles&#47;fromhtmltohtmlviahtml.html" target="_blank">1.5 Before going any further, you should read&hellip;<&#47;a><&#47;code></p>
+<p>2.1 A website for a grocery水果店的例子<br />
+<img src="http:&#47;&#47;www.thymeleaf.org&#47;doc&#47;tutorials&#47;2.1&#47;images&#47;usingthymeleaf&#47;gtvg-model.png" width="576" height="530" class="alignnone" &#47;><br />
+产品通过订单，销售给顾客，顾客评论产品。<br />
+2.1.1 Creating and configuring the Template Engine创建模板引擎<br />
+TemplateEngine templateEngine = GTVGApplication.getTemplateEngine();<br />
+配置模板引擎，创建解析器<code>ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver();<&#47;code><br />
+ServletContextTemplateResolver指定我们要从servletContext把模板文件作为资源来获取</p>
+<p>3 Using Texts<br />
+模板能被正确显示，因为它全是Xhtml标签，浏览器会忽略掉他不认识的attributes.同时因为它有良好定义的Doctype声明，浏览器会在标准模式下显示内容。同时这也是一个有效的xhtml2,因为我们指定了TH DTD来定义th attributes。因此模板是有效的。而且，一旦模板处理结束，所有的th attribute都会移除，TH会自动把DTD声明用标准xhtml 1.0 Strict来替换。<br />
+这个文件我们还没有关心模板的有效或者格式良好方面，我们仅仅指定了标准XHTML 1.0 Strict DOCTYPE， 没有xmlns名称空间声明。这些就可以了</p>
+<p>Using th:text and externalizing text</p>
+<p>Externalizing text是从模板文件抽取模板代码片断，这样他们可以保存到特定文件，且便于被其他等价的文件替换。例子就是i18n处理多语言。 抽出来的文本片段叫做message.<br />
+message有一个key来标志，你可以用#{}指定，一个文本应该对应特定的消息. 比如：<br />
+<code>
+<p th:text="#{home.welcome}">Welcome to our grocery store!<&#47;p><&#47;code><br />
+这里可以看出TH的两个特征：<br />
+th:text attriubute,计算表达式并把结果设置为标签体，替换了代码中的Welcome to our grocery store!文本。<br />
+#{home.welcome} 表达式，指定th:text中使用的文本应该是key为home.welcome相对应local的message.</p>
+<p>Now, where is this externalized text?</p>
+<p>externalized text可以配置，他依赖特定的IMessageResolver的实现.一般实现基于.properties文件。<br />
+但是目前还没有指定message resolver.意味着程序使用的是StandardMessageResolver。StandardMessageResolver会为&#47;WEB-INF&#47;templates&#47;home.html模板查找相同目录下相同名字的.properties文件。<br />
+比如英文就是&#47;WEB-INF&#47;templates&#47;home_en.properties<br />
+西班牙&#47;WEB-INF&#47;templates&#47;home_es.properties<br />
+巴西&#47;WEB-INF&#47;templates&#47;home_pt_BR.properties<br />
+比如西班牙文件的内容：<br />
+home.welcome=&iexcl;Bienvenido a nuestra tienda de comestibles!</p>
+<p>Contexts<br />
+为处理模板创建一个控制器，控制器首先就是创建context. context是一个实现IContext接口的对象，包含了执行模板引擎需要的所有数据，同时还包含Local信息用于处理externalized messages.<br />
+<code>public interface IContext {<br />
+    public VariablesMap<String,Object> getVariables();<br />
+    public Locale getLocale();<br />
+    ...<br />
+    }<&#47;code><br />
+不过实际上用的是WebContext；</p>
+<p>Unescaped Text<br />
+通常，消息会被转义。home.welcome=Welcome to our <b>fantastic<&#47;b> grocery store!<br />
+变成
+<p>Welcome to our <b>fantastic<&#47;b> grocery store!<&#47;p><br />
+这是th:text属性默认的行为，如果我们要不转义，使用th:utext (for &ldquo;unescaped text&rdquo;):</p>
+<p>4 Standard Expression Syntax<br />
+简单表达式:<br />
+变量: ${...}<br />
+选择变量Selection Variable Expressions: *{...}<br />
+Message : #{...}<br />
+Link URL : @{...}<br />
+文字Literal表达式：<br />
+Text literals: 'one text', 'Another one!',&hellip;<br />
+Number literals: 0, 34, 3.0, 12.3,&hellip;<br />
+Boolean literals: true, false<br />
+Null literal: null<br />
+Literal tokens: one, sometext, main,&hellip;<br />
+文本操作:<br />
+String concatenation: +<br />
+Literal substitutions: |The name is ${name}|<br />
+算数操作:<br />
+Binary operators: +, -, *, &#47;, %<br />
+Minus sign (unary operator): -<br />
+布尔操作:<br />
+Binary operators: and, or<br />
+Boolean negation (unary operator): !, not<br />
+比较:<br />
+Comparators: >, <, >=, <= (gt, lt, ge, le)<br />
+相等: ==, != (eq, ne)<br />
+条件:<br />
+<code>If-then: (if) ? (then)<br />
+If-then-else: (if) ? (then) : (else)<br />
+Default: (value) ?: (defaultvalue)<&#47;code><br />
+这些还可以组合使用：<br />
+<code><code>'User is of type ' + (${user.isAdmin()} ? 'Administrator' : (${user.type} ?: 'Unknown'))<&#47;code><&#47;code></p>
+<p>动态message，使用{0}占位符<br />
+<code>home.welcome=&iexcl;Bienvenido a nuestra tienda de comestibles, {0}!</p>
+<p th:utext="#{home.welcome(${session.user.name})}">
+  Welcome to our grocery store, Sebastian Pepper!<br />
+<&#47;p><br />
+<&#47;code><br />
+而且Key也可以动态<br />
+<code>
+<p th:utext="#{${welcomeMsgKey}(${session.user.name})}">
+  Welcome to our grocery store, Sebastian Pepper!<br />
+<&#47;p><&#47;code><br />
+多个变量由，分隔。</p>
+<p>4.2 Variables， OGNL<br />
+<code>
+<p th:utext="#{home.welcome(${session.user.name})}">
+  Welcome to our grocery store, Sebastian Pepper!<br />
+<&#47;p><&#47;code><br />
+等价于<br />
+<code>((User) ctx.getVariables().get("session").get("user")).getName();<&#47;code><br />
+对象写法${person.father.name}可以写成${person['father']['name']}可以写成${person[${father}][${name}]}<br />
+Map写法${countriesByCode.ES}可以写成${personsByName['Stephen Zucchini'].age}<br />
+arrays or collections写法 ${personsArray[0].name}， index没有引号<br />
+调用对象的方法${person.createCompleteName()} 或者方法带参数 ${person.createCompleteNameWithSeparator('-')}</p>
+<p>Expression Basic Objects<br />
+计算context变量的OGNL表达式时，有些对象直接可用，这些对象用#打头<br />
+#ctx: the context object.<br />
+#vars: the context variables.<br />
+#locale: the context locale.<br />
+#httpServletRequest: (only in Web Contexts) the HttpServletRequest object.<br />
+#httpSession: (only in Web Contexts) the HttpSession object.<br />
+比如：<br />
+<code>Established locale country: <span th:text="${#locale.country}">US<&#47;span>.<&#47;code><br />
+<a href="http:&#47;&#47;www.thymeleaf.org&#47;doc&#47;tutorials&#47;2.1&#47;usingthymeleaf.html#appendix-a-expression-basic-objects">http:&#47;&#47;www.thymeleaf.org&#47;doc&#47;tutorials&#47;2.1&#47;usingthymeleaf.html#appendix-a-expression-basic-objects<&#47;a>这些对象的完整说明</p>
+<p>还有工具对象<br />
+Expression Utility Objects</p>
+<p>Besides these basic objects, Thymeleaf will offer us a set of utility objects that will help us perform common tasks in our expressions.</p>
+<p>#dates: utility methods for java.util.Date objects: formatting, component extraction, etc.<br />
+#calendars: analogous to #dates, but for java.util.Calendar objects.<br />
+#numbers: utility methods for formatting numeric objects.<br />
+#strings: utility methods for String objects: contains, startsWith, prepending&#47;appending, etc.<br />
+#objects: utility methods for objects in general.<br />
+#bools: utility methods for boolean evaluation.<br />
+#arrays: utility methods for arrays.<br />
+#lists: utility methods for lists.<br />
+#sets: utility methods for sets.<br />
+#maps: utility methods for maps.<br />
+#aggregates: utility methods for creating aggregates on arrays or collections.<br />
+#messages: utility methods for obtaining externalized messages inside variables expressions, in the same way as they would be obtained using #{&hellip;} syntax.<br />
+#ids: utility methods for dealing with id attributes that might be repeated (for example, as a result of an iteration).<br />
+<a href="http:&#47;&#47;www.thymeleaf.org&#47;doc&#47;tutorials&#47;2.1&#47;usingthymeleaf.html#appendix-b-expression-utility-objects" target="_blank">进入<&#47;a>这些对象的完整说明<br />
+例子<br />
+<code>
+<p>
+  Today is: <span th:text="${#calendars.format(today,'dd MMMM yyyy')}">13 May 2011<&#47;span><br />
+<&#47;p><&#47;code></p>
+<p>4.3 Expressions on selections (asterisk syntax)<br />
+变量表达式还可以写在 *{...} 里面. 当然有很大区别。*{}在选取的对象上计算表达式，而不是整个context的变量Map。只要没有选取对象，${}和*{}一样的。<br />
+什么是对象选取？th:object attribute.比如<br />
+<code>
+<div th:object="${session.user}">
+<p>Name: <span th:text="*{firstName}">Sebastian<&#47;span>.<&#47;p></p>
+<p>Surname: <span th:text="*{lastName}">Pepper<&#47;span>.<&#47;p></p>
+<p>Nationality: <span th:text="*{nationality}">Saturn<&#47;span>.<&#47;p><br />
+  <&#47;div><&#47;code><br />
+等价于<br />
+<code>
+<div>
+<p>Name: <span th:text="${session.user.firstName}">Sebastian<&#47;span>.<&#47;p></p>
+<p>Surname: <span th:text="${session.user.lastName}">Pepper<&#47;span>.<&#47;p></p>
+<p>Nationality: <span th:text="${session.user.nationality}">Saturn<&#47;span>.<&#47;p><br />
+<&#47;div><&#47;code></p>
+<p>两者还可以混合用</p>
+<p><code>
+<div th:object="${session.user}">
+<p>Name: <span th:text="*{firstName}">Sebastian<&#47;span>.<&#47;p></p>
+<p>Surname: <span th:text="${session.user.lastName}">Pepper<&#47;span>.<&#47;p></p>
+<p>Nationality: <span th:text="*{nationality}">Saturn<&#47;span>.<&#47;p><br />
+<&#47;div><&#47;code></p>
+<p>当有了对象选取，选取的对象可以以#object表达式形式，用于${},比如<br />
+<code>
+<div th:object="${session.user}">
+<p>Name: <span th:text="${#object.firstName}">Sebastian<&#47;span>.<&#47;p></p>
+<p>Surname: <span th:text="${session.user.lastName}">Pepper<&#47;span>.<&#47;p></p>
+<p>Nationality: <span th:text="*{nationality}">Saturn<&#47;span>.<&#47;p><br />
+<&#47;div><&#47;code><br />
+没有对象选取，*{}和${}是一样的。<br />
+<code>
+<div>
+<p>Name: <span th:text="*{session.user.name}">Sebastian<&#47;span>.<&#47;p></p>
+<p>Surname: <span th:text="*{session.user.surname}">Pepper<&#47;span>.<&#47;p></p>
+<p>Nationality: <span th:text="*{session.user.nationality}">Saturn<&#47;span>.<&#47;p><br />
+<&#47;div><&#47;code></p>
+<p>4.4 Link URLs<br />
+@{...}<br />
+URL种类<br />
+绝对路径 URLs, like http:&#47;&#47;www.thymeleaf.org<br />
+相对路径 URLs, 包括:<br />
+相对页面 user&#47;login.html 相对页面<br />
+相对context &#47;itemdetails?id=3 (context name in server will be added automatically)<br />
+相对server  ~&#47;billing&#47;processInvoice (allows calling URLs in another context (= application) in the same server.相对server<br />
+相对协议 &#47;&#47;code.jquery.com&#47;jquery-2.0.3.min.js 相对协议<br />
+TH对绝对url都能处理，但是相对URL，需要你用一个实现了IWebContext接口的context对象，这个对象包含request过来的，和创建相对link需要的信息。<br />
+看看 th:href attribute:</p>
+<p><!-- 产生 'http:&#47;&#47;localhost:8080&#47;gtvg&#47;order&#47;details?orderId=3' (加上rewriting) --><br />
+<code><a href="details.html"<br />
+   th:href="@{http:&#47;&#47;localhost:8080&#47;gtvg&#47;order&#47;details(orderId=${o.id})}">view<&#47;a><&#47;code><br />
+<!-- 产生 '&#47;gtvg&#47;order&#47;details?orderId=3' (加上 rewriting) --><br />
+<code><a href="details.html" th:href="@{&#47;order&#47;details(orderId=${o.id})}">view<&#47;a><&#47;code><br />
+<!-- 产生 '&#47;gtvg&#47;order&#47;3&#47;details' (加上 rewriting) --><br />
+<code><a href="details.html" th:href="@{&#47;order&#47;{orderId}&#47;details(orderId=${o.id})}">view<&#47;a><br />
+Some things to note here:<&#47;code></p>
+<p>多个参数用，隔开，例如<br />
+<code>@{&#47;order&#47;process(execId=${execId},execType='FAST')}<&#47;code></p>
+<p>URL路径可以用变量如  @{&#47;order&#47;{orderId}&#47;details(orderId=${orderId})}<br />
+相对URL以&#47;打头，自动加上context名。<br />
+如果cookie被禁止，相对路径自动附加";jsessionid=..."以保留会话。这就是URL重写。你可以用ServletAPI 里面response.encodeURL(...)重写所有URL。</p>
+<p>4.7 Literal substitutions<br />
+文字替换：包含变量的字符串格式化不用+连接。<br />
+<span th:text="|Welcome to our application, ${user.name}!|"><br />
+等价于<br />
+<span th:text="'Welcome to our application, ' + ${user.name} + '!'"><br />
+替换可以与其他类型表达式合起来用<br />
+<span th:text="${onevar} + ' ' + |${twovar}, ${threevar}|"><br />
+注意：只有${}可以在 |...|中出现。其他文字都不行。</p>
+<p>Conditional expressions<br />
+<code><br />
+<tr th:class="${row.even}? (${row.first}? 'first' : 'even') : 'odd'">
+  ...<br />
+<&#47;tr><&#47;code><br />
+ELse可以忽略，忽略时，如果为否，返回null值<br />
+<code><br />
+<tr th:class="${row.even}? 'alt'">
+  ...<br />
+<&#47;tr><&#47;code></p>
+<p>Default expressions (Elvis operator)<br />
+没有then的条件表达式，与groovy的Elvis表达式，oracle的NVL等价。<br />
+<code>
+<div th:object="${session.user}">
+  ...</p>
+<p>Age: <span th:text="*{age}?: '(no age specified)'">27<&#47;span>.<&#47;p><br />
+<&#47;div><&#47;code><br />
+?:后面为前面为空null时的缺省值。</p>
+<p>可以嵌套使用<br />
+<code>
+<p>
+  Name:<br />
+  <span th:text="*{firstName}?: (*{admin}? 'Admin' : #{default.username})">Sebastian<&#47;span><br />
+<&#47;p><&#47;code></p>
+<p>4.12 Preprocessing<br />
+表达式的预处理：指正常表达式执行之前的的表达式执行。这样可以修改最终执行的真实表达式。<br />
+形式与一般的表达式一样，只是加上两个下划线。<br />
+__${expression}__).<br />
+比方，我们又一个i18n Messages_fr.properties包含一个 OGNL表达式，调用特定语言的静态方法。 article.text=@myapp.translator.Translator@translateToFrench({0})<br />
+另外一个等价 Messages_es.properties:<br />
+article.text=@myapp.translator.Translator@translateToSpanish({0})<br />
+我们可以创建一个片断，根据local来计算表达式。通过预处理，先选择表达式再执行。</p>
+<p th:text="${__#{article.text('textVar')}__}">Some text here...<&#47;p><br />
+对于French local，预处理的步骤等价于如下处理：</p>
+<p th:text="${@myapp.translator.Translator@translateToFrench(textVar)}">Some text here...<&#47;p><br />
+attributes中的预处理字符串 __ 用\_\_来转义。</p>
+<p>6 Iteration<br />
+6.2 保持遍历状态</p>
+<p>用th:each时, Thymeleaf提供了跟踪遍历状态的机制：status变量。<br />
+index:0开始<br />
+count:1开始<br />
+size:元素总数<br />
+iter:当前属性<br />
+even&#47;odd:是even&#47;odd<br />
+first:是第一个<br />
+last:是最后一个<br />
+<code><br />
+<table>
+<tr>
+<th>NAME<&#47;th></p>
+<th>PRICE<&#47;th></p>
+<th>IN STOCK<&#47;th><br />
+  <&#47;tr></p>
+<tr th:each="prod,iterStat : ${prods}" th:class="${iterStat.odd}? 'odd'">
+<td th:text="${prod.name}">Onions<&#47;td></p>
+<td th:text="${prod.price}">2.41<&#47;td></p>
+<td th:text="${prod.inStock}? #{true} : #{false}">yes<&#47;td><br />
+  <&#47;tr><br />
+<&#47;table><&#47;code><br />
+注意，在奇数行，css加上了odd,css.<br />
+不显式指定状态，在变量后面加上Stat也可以<br />
+<code><br />
+<table>
+<tr>
+<th>NAME<&#47;th></p>
+<th>PRICE<&#47;th></p>
+<th>IN STOCK<&#47;th><br />
+  <&#47;tr></p>
+<tr th:each="prod : ${prods}" th:class="${prodStat.odd}? 'odd'">
+<td th:text="${prod.name}">Onions<&#47;td></p>
+<td th:text="${prod.price}">2.41<&#47;td></p>
+<td th:text="${prod.inStock}? #{true} : #{false}">yes<&#47;td><br />
+  <&#47;tr><br />
+<&#47;table><&#47;code></p>
+<p>8 Template Layout<br />
+模板布局<br />
+8.1 包含模板片断，定义&#47;引用片断<br />
+用th:fragment attribute.<br />
+比如，现在要加入标准copyright页脚。定义一个footer.html如下<br />
+<code><!DOCTYPE html SYSTEM "http:&#47;&#47;www.thymeleaf.org&#47;dtd&#47;xhtml1-strict-thymeleaf-4.dtd"><br />
+<html xmlns="http:&#47;&#47;www.w3.org&#47;1999&#47;xhtml"<br />
+      xmlns:th="http:&#47;&#47;www.thymeleaf.org"><br />
+  <body></p>
+<div th:fragment="copy">
+      &copy; 2011 The Good Thymes Virtual Grocery<br />
+    <&#47;div><br />
+    <&#47;body><br />
+  <&#47;html><&#47;code><br />
+这代码定义了一个叫做copy的片断，我们通过th:include或者th:replace引入到主页<br />
+<code><body></p>
+<div th:include="footer :: copy"><&#47;div><br />
+  <&#47;body><&#47;code></p>
+<p>引入的句法简单，有三种不同的格式：<br />
+"templatename::domselector" 或者与之等价的 templatename::[domselector]。引入执行templatename模板中指定DOM selector后的片断。 注意：domselector可以仅仅是片断名。dom selector句法与xpath表达式，css selector类似。</p>
+<p>"templatename" 引入名字为templatename的完整模板。注意你在th:include&#47;th:replace标签中用的名字要能被模板解析器识别。</p>
+<p>::domselector" 或者 "this::domselector" 从本模板中引入片断。<br />
+模板名，选择器都可以是表达式，如：<br />
+<code>
+<div th:include="footer :: (${user.isAdmin}? #{footer.admin} : #{footer.normaluser})"><&#47;div><&#47;code><br />
+片断可以使用th:* attributes, 这些attributes一旦引入目标模板就会被计算，它们可以引用目标模板的context变量。</p>
+<p>不用th:fragment引用片断<br />
+Referencing fragments without th:fragment<br />
+亏了DOM selector，我们可以不用th:fragment attribute，这个片断甚至可以是其他应用的代码，完全不知th这回事。</p>
+<p><code>
+<div id="copy-section">
+  &copy; 2011 The Good Thymes Virtual Grocery<br />
+<&#47;div><&#47;code><br />
+通过id attribute，就像css selector一样，就可以使用上面的片断。<br />
+<code><body><br />
+  ...</p>
+<div th:include="footer :: #copy-section"><&#47;div><br />
+  <&#47;body><&#47;code></p>
+<p>th:include 与th:replace的区别。<br />
+前者把片断内容引入到宿主tag，后者用片断的tag替换掉宿主tag。如下HTML5片断：</p>
+<footer th:fragment="copy">
+  &copy; 2011 The Good Thymes Virtual Grocery<br />
+<&#47;footer><br />
+在宿主host的div中引入两次<br />
+<body><br />
+ ...</p>
+<div th:include="footer :: copy"><&#47;div></p>
+<div th:replace="footer :: copy"><&#47;div><br />
+  <&#47;body><br />
+结果是<br />
+<code><body><br />
+  ...</p>
+<div>
+    &copy; 2011 The Good Thymes Virtual Grocery<br />
+  <&#47;div><br />
+  <strong><br />
+<footer><&#47;strong><br />
+    &copy; 2011 The Good Thymes Virtual Grocery<br />
+  <&#47;footer><br />
+  <&#47;body><&#47;code></p>
+<p>th:substituteby attribute可以用作th:replace的同义词,不过建议用后者。前者今后可能被抛弃。 </p>
+<p>8.2 Parameterizable fragment signatures<br />
+为了使模板片断函数化，th:fragment可以使用参数<br />
+<code>
+<div th:fragment="frag (onevar,twovar)">
+<p th:text="${onevar} + ' - ' + ${twovar}">...<&#47;p><br />
+<&#47;div><&#47;code><br />
+要求我们用以下两种句法之一来调用这个片断。<br />
+<code>
+<div th:include="::frag (${value1},${value2})">...<&#47;div></p>
+<div th:include="::frag (onevar=${value1},twovar=${value2})">...<&#47;div><&#47;code><br />
+后一种句法，不强调顺序。如下一可以<br />
+<code>
+<div th:include="::frag (twovar=${value2},onevar=${value1})">...<&#47;div><&#47;code></p>
+<p>片断无signature本地变量<br />
+即使没有signature<br />
+<code>
+<div th:fragment="frag">
+    ...<br />
+<&#47;div><&#47;code><br />
+我们也可以用第二种方式(仅能)来调用。<br />
+<code>
+<div th:include="::frag (onevar=${value1},twovar=${value2})"><&#47;code><br />
+这就实际上，等价于th:include和th:width的组合。<br />
+<code>
+<div th:include="::frag" th:with="onevar=${value1},twovar=${value2}"><&#47;code></p>
+<p>注意这个片断本地变量的说明，不管是否带signature,并不会在其执行前，引起context预先清空。片断能访问所有的调用模板的context变量。</p>
+<p>th:assert 模板断言<br />
+当为false，抛出异常。<br />
+<code>
+<div th:assert="${onevar},(${twovar} != 43)">...<&#47;div><&#47;code><br />
+主要用来在片断signature校验参数很方便。<br />
+<code><br />
+<header th:fragment="contentheader(title)" th:assert="${!#strings.isEmpty(title)}">...<&#47;header><&#47;code></p>
+<p>8.3 去除模板片断<br />
+<code><br />
+<table>
+<tr>
+<th>NAME<&#47;th></p>
+<th>PRICE<&#47;th></p>
+<th>IN STOCK<&#47;th></p>
+<th>COMMENTS<&#47;th><br />
+  <&#47;tr></p>
+<tr th:each="prod : ${prods}" th:class="${prodStat.odd}? 'odd'">
+<td th:text="${prod.name}">Onions<&#47;td></p>
+<td th:text="${prod.price}">2.41<&#47;td></p>
+<td th:text="${prod.inStock}? #{true} : #{false}">yes<&#47;td></p>
+<td>
+      <span th:text="${#lists.size(prod.comments)}">2<&#47;span> comment&#47;s<br />
+      <a href="comments.html"<br />
+         th:href="@{&#47;product&#47;comments(prodId=${prod.id})}"<br />
+         th:unless="${#lists.isEmpty(prod.comments)}">view<&#47;a><br />
+    <&#47;td><br />
+  <&#47;tr><br />
+<&#47;table><&#47;code></p>
+<p>这个代码作为模板没问题，但作为一个静态页面，不是一个好的prototype.因为，尽管浏览器能显示，表格只有一行数据，作为prototype，看上去不真实。应该多一些行。<br />
+<code><br />
+<table>
+<tr>
+<th>NAME<&#47;th></p>
+<th>PRICE<&#47;th></p>
+<th>IN STOCK<&#47;th></p>
+<th>COMMENTS<&#47;th><br />
+  <&#47;tr></p>
+<tr th:each="prod : ${prods}" th:class="${prodStat.odd}? 'odd'">
+<td th:text="${prod.name}">Onions<&#47;td></p>
+<td th:text="${prod.price}">2.41<&#47;td></p>
+<td th:text="${prod.inStock}? #{true} : #{false}">yes<&#47;td></p>
+<td>
+      <span th:text="${#lists.size(prod.comments)}">2<&#47;span> comment&#47;s<br />
+      <a href="comments.html"<br />
+         th:href="@{&#47;product&#47;comments(prodId=${prod.id})}"<br />
+         th:unless="${#lists.isEmpty(prod.comments)}">view<&#47;a><br />
+    <&#47;td><br />
+  <&#47;tr></p>
+<tr class="odd">
+<td>Blue Lettuce<&#47;td></p>
+<td>9.55<&#47;td></p>
+<td>no<&#47;td></p>
+<td>
+      <span>0<&#47;span> comment&#47;s<br />
+    <&#47;td><br />
+  <&#47;tr></p>
+<tr>
+<td>Mild Cinnamon<&#47;td></p>
+<td>1.99<&#47;td></p>
+<td>yes<&#47;td></p>
+<td>
+      <span>3<&#47;span> comment&#47;s<br />
+      <a href="comments.html">view<&#47;a><br />
+    <&#47;td><br />
+  <&#47;tr><br />
+<&#47;table><&#47;code><br />
+现在有了三行，比prototype好多了，但用Thymeleaf处理呢？<br />
+<code><br />
+<table>
+<tr>
+<th>NAME<&#47;th></p>
+<th>PRICE<&#47;th></p>
+<th>IN STOCK<&#47;th></p>
+<th>COMMENTS<&#47;th><br />
+  <&#47;tr></p>
+<tr>
+<td>Fresh Sweet Basil<&#47;td></p>
+<td>4.99<&#47;td></p>
+<td>yes<&#47;td></p>
+<td>
+      <span>0<&#47;span> comment&#47;s<br />
+    <&#47;td><br />
+  <&#47;tr></p>
+<tr class="odd">
+<td>Italian Tomato<&#47;td></p>
+<td>1.25<&#47;td></p>
+<td>no<&#47;td></p>
+<td>
+      <span>2<&#47;span> comment&#47;s<br />
+      <a href="&#47;gtvg&#47;product&#47;comments?prodId=2">view<&#47;a><br />
+    <&#47;td><br />
+  <&#47;tr></p>
+<tr>
+<td>Yellow Bell Pepper<&#47;td></p>
+<td>2.50<&#47;td></p>
+<td>yes<&#47;td></p>
+<td>
+      <span>0<&#47;span> comment&#47;s<br />
+    <&#47;td><br />
+  <&#47;tr></p>
+<tr class="odd">
+<td>Old Cheddar<&#47;td></p>
+<td>18.75<&#47;td></p>
+<td>yes<&#47;td></p>
+<td>
+      <span>1<&#47;span> comment&#47;s<br />
+      <a href="&#47;gtvg&#47;product&#47;comments?prodId=4">view<&#47;a><br />
+    <&#47;td><br />
+  <&#47;tr></p>
+<tr class="odd">
+<td>Blue Lettuce<&#47;td></p>
+<td>9.55<&#47;td></p>
+<td>no<&#47;td></p>
+<td>
+      <span>0<&#47;span> comment&#47;s<br />
+    <&#47;td><br />
+  <&#47;tr></p>
+<tr>
+<td>Mild Cinnamon<&#47;td></p>
+<td>1.99<&#47;td></p>
+<td>yes<&#47;td></p>
+<td>
+      <span>3<&#47;span> comment&#47;s<br />
+      <a href="comments.html">view<&#47;a><br />
+    <&#47;td><br />
+  <&#47;tr><br />
+<&#47;table><&#47;code></p>
+<p>最后两行是模拟行，遍历只应用到了第一行，没有理由移掉了前面2行。<br />
+需要一个方法，移掉那两行。我们把th:remove用到第二个和第三个标签。<br />
+<code><br />
+<table>
+<tr>
+<th>NAME<&#47;th></p>
+<th>PRICE<&#47;th></p>
+<th>IN STOCK<&#47;th></p>
+<th>COMMENTS<&#47;th><br />
+  <&#47;tr></p>
+<tr th:each="prod : ${prods}" th:class="${prodStat.odd}? 'odd'">
+<td th:text="${prod.name}">Onions<&#47;td></p>
+<td th:text="${prod.price}">2.41<&#47;td></p>
+<td th:text="${prod.inStock}? #{true} : #{false}">yes<&#47;td></p>
+<td>
+      <span th:text="${#lists.size(prod.comments)}">2<&#47;span> comment&#47;s<br />
+      <a href="comments.html"<br />
+         th:href="@{&#47;product&#47;comments(prodId=${prod.id})}"<br />
+         th:unless="${#lists.isEmpty(prod.comments)}">view<&#47;a><br />
+    <&#47;td><br />
+  <&#47;tr></p>
+<tr class="odd" th:remove="all">
+<td>Blue Lettuce<&#47;td></p>
+<td>9.55<&#47;td></p>
+<td>no<&#47;td></p>
+<td>
+      <span>0<&#47;span> comment&#47;s<br />
+    <&#47;td><br />
+  <&#47;tr></p>
+<tr th:remove="all">
+<td>Mild Cinnamon<&#47;td></p>
+<td>1.99<&#47;td></p>
+<td>yes<&#47;td></p>
+<td>
+      <span>3<&#47;span> comment&#47;s<br />
+      <a href="comments.html">view<&#47;a><br />
+    <&#47;td><br />
+  <&#47;tr><br />
+<&#47;table><&#47;code><br />
+处理后，<br />
+<code><br />
+<table>
+<tr>
+<th>NAME<&#47;th></p>
+<th>PRICE<&#47;th></p>
+<th>IN STOCK<&#47;th></p>
+<th>COMMENTS<&#47;th><br />
+  <&#47;tr></p>
+<tr>
+<td>Fresh Sweet Basil<&#47;td></p>
+<td>4.99<&#47;td></p>
+<td>yes<&#47;td></p>
+<td>
+      <span>0<&#47;span> comment&#47;s<br />
+    <&#47;td><br />
+  <&#47;tr></p>
+<tr class="odd">
+<td>Italian Tomato<&#47;td></p>
+<td>1.25<&#47;td></p>
+<td>no<&#47;td></p>
+<td>
+      <span>2<&#47;span> comment&#47;s<br />
+      <a href="&#47;gtvg&#47;product&#47;comments?prodId=2">view<&#47;a><br />
+    <&#47;td><br />
+  <&#47;tr></p>
+<tr>
+<td>Yellow Bell Pepper<&#47;td></p>
+<td>2.50<&#47;td></p>
+<td>yes<&#47;td></p>
+<td>
+      <span>0<&#47;span> comment&#47;s<br />
+    <&#47;td><br />
+  <&#47;tr></p>
+<tr class="odd">
+<td>Old Cheddar<&#47;td></p>
+<td>18.75<&#47;td></p>
+<td>yes<&#47;td></p>
+<td>
+      <span>1<&#47;span> comment&#47;s<br />
+      <a href="&#47;gtvg&#47;product&#47;comments?prodId=4">view<&#47;a><br />
+    <&#47;td><br />
+  <&#47;tr><br />
+<&#47;table><&#47;code></p>
+<p>attribute里面的那些值什么意思？实际上th:remove根据它的取值，有五种行为：<br />
+all: 包含他的tag及其所有孩子都移走。<br />
+body: 只移走孩子.<br />
+tag: 只移走包含他的tag.<br />
+all-but-first: 移走所有的孩子，但保留第一行。<br />
+none : 什么都不作。</p>
+<p>all-but-first有什么用？prototyping时，我们可以用它保存一些th:remove="all"<br />
+<code><br />
+<table>
+<thead>
+<tr>
+<th>NAME<&#47;th></p>
+<th>PRICE<&#47;th></p>
+<th>IN STOCK<&#47;th></p>
+<th>COMMENTS<&#47;th><br />
+    <&#47;tr><br />
+  <&#47;thead></p>
+<tbody th:remove="all-but-first">
+<tr th:each="prod : ${prods}" th:class="${prodStat.odd}? 'odd'">
+<td th:text="${prod.name}">Onions<&#47;td></p>
+<td th:text="${prod.price}">2.41<&#47;td></p>
+<td th:text="${prod.inStock}? #{true} : #{false}">yes<&#47;td></p>
+<td>
+        <span th:text="${#lists.size(prod.comments)}">2<&#47;span> comment&#47;s<br />
+        <a href="comments.html"<br />
+           th:href="@{&#47;product&#47;comments(prodId=${prod.id})}"<br />
+           th:unless="${#lists.isEmpty(prod.comments)}">view<&#47;a><br />
+      <&#47;td><br />
+    <&#47;tr></p>
+<tr class="odd">
+<td>Blue Lettuce<&#47;td></p>
+<td>9.55<&#47;td></p>
+<td>no<&#47;td></p>
+<td>
+        <span>0<&#47;span> comment&#47;s<br />
+      <&#47;td><br />
+    <&#47;tr></p>
+<tr>
+<td>Mild Cinnamon<&#47;td></p>
+<td>1.99<&#47;td></p>
+<td>yes<&#47;td></p>
+<td>
+        <span>3<&#47;span> comment&#47;s<br />
+        <a href="comments.html">view<&#47;a><br />
+      <&#47;td><br />
+    <&#47;tr><br />
+  <&#47;tbody><br />
+<&#47;table><&#47;code></p>
+<p>th:remove attribute 可以带任意表达式，只要他返回允许的字符串值(all, tag, body, all-but-first or none).<br />
+这意味着，移除可以带条件，如<br />
+<code><a href="&#47;something" th:remove="${condition}? tag : none">Link text not to be removed<&#47;a><&#47;code></p>
+<p>注意th:remove把null当作none同义词。因此下面两个例子跟上面时一样的。<br />
+<code><a href="&#47;something" th:remove="${condition}? tag">Link text not to be removed<&#47;a><br />
+In this case, if ${condition} is false, null will be returned, and thus no removal will be performed.<&#47;code></p>
+<p>注释<br />
+<code><!-- .大家都不管.. --><br />
+<!--&#47;* This code will be removed at thymeleaf parsing time!解析器解析的时候忽略 *&#47;--><br />
+<!--&#47;*--> </p>
+<div>
+     you can see me only before thymeleaf processes me!块状注释，静态能看见，处理后就没有了<br />
+  <&#47;div><br />
+<!--*&#47;--><&#47;code><br />
+比如<br />
+<code><br />
+<table>
+<tr th:each="x : ${xs}">
+     ...<br />
+   <&#47;tr><br />
+   <!--&#47;*--></p>
+<tr>
+     static，prototype认识我，th不认识<br />
+   <&#47;tr></p>
+<tr>
+     ...<br />
+   <&#47;tr><br />
+   <!--*&#47;--><br />
+<&#47;table><&#47;code></p>
+<p><code><span>hello!<&#47;span><br />
+<!--&#47;*&#47;</p>
+<div th:text="${...}">
+    th认识我，prototype不认识<br />
+  <&#47;div><br />
+&#47;*&#47;--><br />
+<span>goodbye!<&#47;span><&#47;code></p>
+<p> Synthetic th:block tag<br />
+th唯一一个不是attribute，而是element的processor.<br />
+th:block是一个属性容器。模板开发者可用来指定任意attribute。th会执行这些attribute,然后消失得无影无踪。<br />
+这在创建一个遍历表，每个元素需要多个tr的时候有用。<br />
+<code><br />
+<table>
+<th:block th:each="user : ${users}">
+<tr>
+<td th:text="${user.login}">...<&#47;td></p>
+<td th:text="${user.name}">...<&#47;td><br />
+    <&#47;tr></p>
+<tr>
+<td colspan="2" th:text="${user.address}">...<&#47;td><br />
+    <&#47;tr><br />
+  <&#47;th:block><br />
+<&#47;table><&#47;code></p>
+<p>与仅th识别的注释组合特别有用。<br />
+<code><br />
+<table><&#47;code><br />
+<code>    <!--&#47;*&#47;
+<th:block th:each="user : ${users}"> &#47;*&#47;--><&#47;code><br />
+<code><br />
+<tr>
+<td th:text="${user.login}">...<&#47;td></p>
+<td th:text="${user.name}">...<&#47;td><br />
+    <&#47;tr></p>
+<tr>
+<td colspan="2" th:text="${user.address}">...<&#47;td><br />
+    <&#47;tr><&#47;code><br />
+   <code> <!--&#47;*&#47; <&#47;th:block> &#47;*&#47;--><&#47;code><br />
+<code><&#47;table><&#47;code></p>
+<p>注意这个方案是怎样让模板成为一个有效html(没有在table中用div),即使在prototype下也工作很好的。</p>

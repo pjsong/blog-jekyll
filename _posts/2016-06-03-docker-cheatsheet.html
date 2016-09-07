@@ -1,0 +1,189 @@
+---
+layout: post
+status: publish
+published: true
+title: docker cheatsheet
+author:
+  display_name: wordpress
+  login: wordpress
+  email: pjsong3101@163.com
+  url: ''
+author_login: wordpress
+author_email: pjsong3101@163.com
+wordpress_id: 207
+wordpress_url: http://oursmedia.net/wordpress/?p=207
+date: '2016-06-03 03:15:19 +0000'
+date_gmt: '2016-06-02 19:15:19 +0000'
+categories:
+- 实施笔记
+tags: []
+comments: []
+---
+<p>digitalocean中docker安装SS的命令：</p>
+<p>docker pull oddrationale&#47;docker-shadowsocks</p>
+<pre><code>docker run -d -p 1984:1984 oddrationale&#47;docker-shadowsocks -s 0.0.0.0 -p 1984 -k xxxx -m aes-256-cfb<&#47;code><&#47;pre><br />
+shadowsocks windows<a href="https:&#47;&#47;github.com&#47;shadowsocks&#47;shadowsocks-windows&#47;issues&#47;476" target="_blank">客户端报错了命令<&#47;a></p>
+<p>管理员登录command</p>
+<p>netsh interface ipv4 reset</p>
+<p>netsh interface ipv6 reset</p>
+<p>netsh winsock reset</p>
+<p>docker ps</p>
+<p>docker images</p>
+<p>docker run -p 8081:80</p>
+<p>docker <span class="hljs-keyword">run<&#47;span> -i -t ubuntu &#47;bin&#47;bash &nbsp; &nbsp; &nbsp; <strong>i<&#47;strong>nteractive, create sudo<strong>&nbsp; t<&#47;strong>ty as&nbsp;stdin stdout <strong>d<&#47;strong>aemon or detach</p>
+<div id="page" class="hfeed site">
+<div id="main" class="site-main">
+<div id="primary" class="content-area">
+<div id="content" class="site-content">
+<article id="post-10" class="post-10 page type-page status-publish hentry">
+<div class="entry-content">
+<pre>docker attach --sig-proxy=true insane_bardeen<br />
+docker rm <span class="variable">$(<&#47;span>docker ps -a -q)<script src="https:&#47;&#47;pagead2.googlesyndication.com&#47;pub-config&#47;r20160212&#47;ca-pub-7054762349007490.js" type="mce-mce-mce-mce-no&#47;type"><&#47;script><script src="http:&#47;&#47;asset.tuicool.com&#47;assets&#47;application-5c19f81d7795619188f5a2cb78fc7803.js" type="mce-mce-mce-mce-text&#47;javascript"><&#47;script><!-- [if IE 7]></p>
+<link rel="stylesheet" href="http:&#47;&#47;assets.tuicool.com&#47;assets&#47;font-awesome-ie7.min.css">
+  <![endif]--><script src="http:&#47;&#47;static2.tuicool.com&#47;assets&#47;tip.js?t=3" type="mce-mce-mce-mce-text&#47;javascript"><&#47;script><script src="http:&#47;&#47;static1.tuicool.com&#47;assets&#47;spin.min.js" type="mce-mce-mce-mce-text&#47;javascript"><&#47;script><script src="http:&#47;&#47;fanyi.youdao.com&#47;openapi.do?type=data&amp;doctype=jsonp&amp;version=1.1&amp;relatedUrl=http%3A%2F%2Fwww.tuicool.com%2Farticles%2FU7vEBzA&amp;keyfrom=tuicool&amp;key=974115503&amp;callback=YoudaoSelector.Instance.update&amp;translate=on&amp;q=docker%20rm%20%24(docker%20ps%20-a%20-q)&amp;ts=1464891546758" type="mce-mce-mce-mce-text&#47;javascript" charset="utf-8"><&#47;script><script src="http:&#47;&#47;fanyi.youdao.com&#47;openapi.do?type=data&amp;only=on&amp;doctype=jsonp&amp;version=1.1&amp;relatedUrl=http%3A%2F%2Fwww.tuicool.com%2Farticles%2FU7vEBzA&amp;keyfrom=tuicool&amp;key=974115503&amp;callback=YoudaoSelector.Instance.updateTranslate&amp;q=docker%20rmi%20%24(docker%20images%20--quiet%20--filter%20%22dangling%3Dtrue%22)&amp;ts=1464891574848" type="mce-mce-mce-mce-text&#47;javascript" charset="utf-8"><&#47;script><&#47;pre></p>
+<div class="container-fluid">
+<div class="row-fluid article_row_fluid">
+<div class="span8 contant article_detail_bg">
+<div id="nei" class="article_body article_body_en">
+<pre class="prettyprint ruby">docker rmi <span class="variable">$(<&#47;span>docker images -q)<br />
+# Start a very useful long-running process<&#47;pre></p>
+<div class="off-canvas-wrap" data-offcanvas="">
+<div class="inner-wrap">
+<div id="docs" class="row">
+<div class="large-6 columns">
+<section id="main">
+<article id="content">
+<pre><code class="hljs ruby">$ JOB=$(docker run -d ubuntu &#47;bin&#47;sh -c <span class="hljs-string">"while true; do echo Hello world; sleep 1; done"<&#47;span>)</p>
+<p><span class="hljs-comment"># Collect the output of the job so far<&#47;span><br />
+$ docker logs $JOB</p>
+<p><span class="hljs-comment"># Kill the job<&#47;span><br />
+$ docker kill $JOB<br />
+ Quickstart<script src="https:&#47;&#47;www.google-analytics.com&#47;analytics.js" async="" type="text&#47;javascript"><&#47;script><script src="&#47;&#47;www.googletagmanager.com&#47;gtm.js?id=GTM-WLGFZV" async=""><&#47;script><script src="https:&#47;&#47;ajax.googleapis.com&#47;ajax&#47;libs&#47;jquery&#47;1.11.3&#47;jquery.min.js"><&#47;script><script src="..&#47;..&#47;dist&#47;assets&#47;js&#47;modernizr.js"><&#47;script><&#47;code><&#47;pre></p>
+<div class="off-canvas-wrap" data-offcanvas="">
+<div class="inner-wrap">
+<div id="docs" class="row">
+<div class="large-6 columns">
+<section id="main">
+<article id="content">
+<pre><code class="hljs ruby"><span class="hljs-comment"># Start a new container<&#47;span><br />
+$ JOB=$(docker run -d ubuntu &#47;bin&#47;sh -c <span class="hljs-string">"while true; do echo Hello world; sleep 1; done"<&#47;span>)</p>
+<p><span class="hljs-comment"># Stop the container<&#47;span><br />
+$ docker stop $JOB</p>
+<p><span class="hljs-comment"># Start the container<&#47;span><br />
+$ docker start $JOB</p>
+<p><span class="hljs-comment"># Restart the container<&#47;span><br />
+$ docker restart $JOB</p>
+<p><span class="hljs-comment"># SIGKILL a container<&#47;span><br />
+$ docker kill $JOB</p>
+<p><span class="hljs-comment"># Remove a container<&#47;span><br />
+$ docker stop $JOB <span class="hljs-comment"># Container must be stopped to remove it<&#47;span><br />
+$ docker rm $JOB<br />
+<&#47;code><&#47;pre><br />
+<&#47;article><&#47;section><&#47;div><br />
+<&#47;div><br />
+<&#47;div><br />
+<&#47;div></p>
+<pre><code class="hljs ruby">&nbsp;<&#47;code><&#47;pre><br />
+<&#47;article><&#47;section><&#47;div><br />
+<&#47;div><br />
+<&#47;div><br />
+<&#47;div></p>
+<table>
+<tbody>
+<tr>
+<td>Build an image<&#47;td></p>
+<td>docker build &ndash;rm=true .<&#47;td><br />
+<&#47;tr></p>
+<tr>
+<td>Install an image<&#47;td></p>
+<td>docker pull&nbsp;${IMAGE}<&#47;td><br />
+<&#47;tr></p>
+<tr>
+<td>List of installed images<&#47;td></p>
+<td>docker images<&#47;td><br />
+<&#47;tr></p>
+<tr>
+<td>List of installed images (detailed listing)<&#47;td></p>
+<td>docker images &ndash;no-trunc<&#47;td><br />
+<&#47;tr></p>
+<tr>
+<td>Remove an image<&#47;td></p>
+<td>docker rmi ${IMAGE_ID}<&#47;td><br />
+<&#47;tr></p>
+<tr>
+<td>Remove all untagged images<&#47;td></p>
+<td>docker rmi $(docker images | grep &ldquo;^&rdquo; | awk &ldquo;{print $3}&rdquo;)<&#47;td><br />
+<&#47;tr></p>
+<tr>
+<td>Remove all images<&#47;td></p>
+<td>docker rm $(docker ps -aq)<&#47;td><br />
+<&#47;tr></p>
+<tr>
+<td>Run a container<&#47;td></p>
+<td>docker run<&#47;td><br />
+<&#47;tr></p>
+<tr>
+<td>List containers<&#47;td></p>
+<td>docker ps<&#47;td><br />
+<&#47;tr></p>
+<tr>
+<td>Stop a container<&#47;td></p>
+<td>docker stop ${CID}<&#47;td><br />
+<&#47;tr></p>
+<tr>
+<td>Find IP address of the container<&#47;td></p>
+<td>docker inspect &ndash;format &lsquo;{{ .NetworkSettings.IPAddress }}&rsquo; ${CID}<&#47;td><br />
+<&#47;tr></p>
+<tr>
+<td>Attach to a container<&#47;td></p>
+<td>docker attach ${CID}<&#47;td><br />
+<&#47;tr></p>
+<tr>
+<td>Remove a container<&#47;td></p>
+<td>docker rm ${CID}<&#47;td><br />
+<&#47;tr></p>
+<tr>
+<td>Remove all containers<&#47;td></p>
+<td>docker rm $(docker ps -aq)<&#47;td><br />
+<&#47;tr><br />
+<&#47;tbody><br />
+<&#47;table><br />
+<&#47;div><br />
+<&#47;div><br />
+<&#47;div><br />
+<&#47;div><br />
+<&#47;div><br />
+<&#47;article><&#47;div><br />
+<&#47;div><br />
+<&#47;div><br />
+<&#47;div></p>
+<div id="page" class="hfeed site"><&#47;div></p>
+<div class="hfeed site"><a href="https:&#47;&#47;docs.docker.com&#47;engine&#47;reference&#47;run&#47;#restart-policies-restart">&nbsp;DOCKER RESTART<&#47;a><&#47;div></p>
+<div class="hfeed site">--restart=no||always||on-failure[:max-retries]||unless-stopped<&#47;div></p>
+<div class="hfeed site"><&#47;div></p>
+<div class="hfeed site">进入shell<&#47;div></p>
+<div class="hfeed site"><span class="crayon-e">docker <&#47;span><span class="crayon-v">exec<&#47;span> <span class="crayon-o">-<&#47;span><span class="crayon-i">it<&#47;span> <span class="crayon-cn">02061ddf0a3d1b2806a1ee6e354f4064d9d2ff4d84d8c96c0273c8883917a92f<&#47;span> <span class="crayon-e">bash<&#47;span><&#47;div></p>
+<div class="hfeed site">退出shell ctrl+p ctrl+q<&#47;div></p>
+<div class="hfeed site"><&#47;div></p>
+<div class="hfeed site">Docker+Nginx <a href="https:&#47;&#47;www.nginx.com&#47;blog&#47;deploying-nginx-nginx-plus-docker&#47;" target="_blank">参考1<&#47;a>&nbsp;<a href="https:&#47;&#47;hub.docker.com&#47;_&#47;nginx&#47;" target="_blank">参考2<&#47;a><&#47;div></p>
+<div class="hfeed site">0, 启动&nbsp;docker run --name nginx-default -p 80:80 -p 443:443 -d nginx<&#47;div></p>
+<div class="hfeed site">1，备份容器文件：<&#47;div></p>
+<div class="hfeed site">docker cp nginx-default:&#47;etc&#47;nginx&#47;nginx.conf .&#47;conf&#47;nginx.conf<&#47;div></p>
+<div class="hfeed site">docker cp nginx-default:&#47;etc&#47;nginx&#47;conf.d .&#47;<&#47;div></p>
+<div class="hfeed site">cp .&#47;conf&#47;nginx.conf .&#47;conf&#47;nginx.conf.backup.<&#47;div></p>
+<div class="hfeed site">3, 创建image从host拷贝文件.<&#47;div></p>
+<div class="hfeed site">vi Dockerfile<&#47;div></p>
+<div class="hfeed site">
+<pre>FROM nginx<br />
+RUN rm &#47;etc&#47;nginx&#47;conf.d&#47;default.conf<br />
+RUN rm &#47;etc&#47;nginx&#47;conf.d&#47;example_ssl.conf<br />
+COPY&nbsp;content &#47;usr&#47;share&#47;nginx&#47;html<br />
+COPY&nbsp;conf &#47;etc&#47;nginx</p>
+<p><strong>docker build -t nginx_conf_html .<br />
+docker run --name nginx_conf_html -p 80:80 -p 443:443 -d nginx_conf_html<br />
+<&#47;strong><&#47;pre><br />
+<&#47;div></p>
+<div class="hfeed site">&nbsp;4,另开容器管理容器内磁盘, &nbsp;可以在容器内修改文件，略<&#47;div></p>
+<div class="hfeed site"><&#47;div></p>
+<div class="hfeed site"><&#47;div></p>
+<div class="hfeed site"><&#47;div></p>

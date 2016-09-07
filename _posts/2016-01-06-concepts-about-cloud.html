@@ -1,0 +1,47 @@
+---
+layout: post
+status: publish
+published: true
+title: 云平台相关概念
+author:
+  display_name: wordpress
+  login: wordpress
+  email: pjsong3101@163.com
+  url: ''
+author_login: wordpress
+author_email: pjsong3101@163.com
+wordpress_id: 145
+wordpress_url: http://oursmedia.net/wordpress/?p=145
+date: '2016-01-06 13:55:43 +0000'
+date_gmt: '2016-01-06 05:55:43 +0000'
+categories:
+- 实施笔记
+tags: []
+comments: []
+---
+<p><strong><a href="https:&#47;&#47;www.digitalocean.com&#47;community&#47;tutorials&#47;an-introduction-to-coreos-system-components" target="_blank">coreos系统组件<&#47;a><&#47;strong></p>
+<p><strong>CoreOS:轻量级主机系统<&#47;strong>，用docker包装应用，设计集群环境。前者保证进程隔离，后者保证应用可以在集群间轻松转移。</p>
+<p>etcd：全局分布式key-value对存储，在节点之间传递配置数据；同时允许服务发现：应用程序根据共享的内容，动态配置。</p>
+<p>比如，LB通过查询etcd,启动时得到多个后台webserver的ip。</p>
+<p>Fleet:调度&#47;管理整个集群上的应用。作为一个集群范围的初始化系统提供服务。通过为每一个节点提供systemd初始化系统，从单一节点，为应用在集群上配置高可用程序和集群管理。</p>
+<p>CoreOS设计</p>
+<p>启动时，CoreOS读取用户提供的cloud-config文件，CoreOS通过它进行初始化配置，一创建便能马上加入集群。</p>
+<p>cloud-config文件至少要提供说明，怎样加入一个已有集群，和启动etcd,fleet服务的指令。这样新的主机能够与现有的服务器建立连接，提供工具配置管理集群里面的每一个节点。这是启动一个CoreOS节点进入集群必须要做的。</p>
+<p><a href="https:&#47;&#47;www.digitalocean.com&#47;community&#47;tutorials&#47;how-to-set-up-a-coreos-cluster-on-digitalocean" target="_blank">配置CoreOs<&#47;a></p>
+<h3 id="ssh-keys">SSH Keys<&#47;h3><br />
+每个服务器需要安装至少一个SSH publicKey到用户授权的key文件,用户需要对应的privateKey来登录。</p>
+<p>如果还没有，通过&nbsp;<a href="https:&#47;&#47;www.digitalocean.com&#47;community&#47;tutorials&#47;how-to-use-ssh-keys-with-digitalocean-droplets">How To Use SSH Keys with DigitalOcean Droplets<&#47;a>. 教程添加:</p>
+<h3 id="digitalocean-personal-access-token">DigitalOcean Personal Access Token<&#47;h3><br />
+用api来创建主机时要用到。</p>
+<h2 id="generate-a-new-discovery-url">Generate a New Discovery URL<&#47;h2><br />
+真正创建集群第一步。该地址存储对等节点的地址等数据。可以用curl来生成。</p>
+<pre class="code-pre "><code>curl -w "\n" "https:&#47;&#47;discovery.etcd.io&#47;new?size=3"<br />
+得到唯一的新的url<br />
+https:&#47;&#47;discovery.etcd.io&#47;5c1574906b3502aa9d8dc43c1b185775<br />
+这个地址就是集群的地址，配置到每个服务器etcd里面的cloud-config去。<br />
+<&#47;code><&#47;pre></p>
+<h2 id="write-a-cloud-config-file">Write a Cloud-Config File<&#47;h2><br />
+系统启动后开始处理这个文件，来用etcd2设置来配置机器，找到自己的集群。</p>
+<p>完整的配置项说明参考官方文档，&nbsp;<a href="https:&#47;&#47;coreos.com&#47;docs&#47;cluster-management&#47;setup&#47;cloudinit-cloud-config&#47;">official documentation<&#47;a>. 以及工具。&nbsp;<a href="https:&#47;&#47;coreos.com&#47;validate&#47;">Cloud-Config Validator<&#47;a>.</p>
+<p>&nbsp;</p>
+<pre class="code-pre "><code>&nbsp;<&#47;code><&#47;pre></p>

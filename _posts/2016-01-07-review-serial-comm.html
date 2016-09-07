@@ -1,0 +1,124 @@
+---
+layout: post
+status: publish
+published: true
+title: 嵌入式通信复习--串口通信
+author:
+  display_name: wordpress
+  login: wordpress
+  email: pjsong3101@163.com
+  url: ''
+author_login: wordpress
+author_email: pjsong3101@163.com
+wordpress_id: 155
+wordpress_url: http://oursmedia.net/wordpress/?p=155
+date: '2016-01-07 13:35:07 +0000'
+date_gmt: '2016-01-07 05:35:07 +0000'
+categories:
+- 实施笔记
+tags: []
+comments: []
+---
+<p><a href="http:&#47;&#47;www.commfront.com&#47;rs232_protocol_analyzer_monitor&#47;RS232_Analyzer_Monitor_Tester_TUTORIAL.HTM" target="_blank">进入原文参考<&#47;a></p>
+<p>1 &nbsp;<b>DTE and DCE<br />
+<&#47;b></p>
+<p>DTE ，Data Terminal Equipment.比如计算机.一般是公头。如果要确认，DB9测量pin3和pin5的电压，-3到-15之间就是DTE。如果-3到-15在pin2和pin5之间，就是DCE。DB25相反。</p>
+<p>DCE ，Data Communication Equipment. 猫，调制解调器.</p>
+<p>&nbsp;</p>
+<table id="table4" border="0" width="71%" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td width="31%"><img src="http:&#47;&#47;www.commfront.com&#47;images&#47;db9-male.jpg" alt="DB9" width="100" height="43" border="0" &#47;><&#47;td></p>
+<td width="69%"><span style="color: #434343; font-size: small;">.DB9公头，要从前面看，母头要反过来或者从后面看。<&#47;span><&#47;td><br />
+<&#47;tr><br />
+<&#47;tbody><br />
+<&#47;table></p>
+<table id="table5" border="1" width="93%" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td colspan="3" align="center" bgcolor="#C0C0C0" width="42%" height="20"><b><span style="font-family: Arial; font-size: small;">DTE Pin Assignment (DB-9)<&#47;span><&#47;b><&#47;td></p>
+<td colspan="3" align="center" bgcolor="#C0C0C0" width="38%" height="20">
+<p align="left"><b><span style="font-family: Arial; font-size: small;">DCE Pin Assignment (DB-9)<&#47;span><&#47;b><&#47;p><br />
+<&#47;td><br />
+<&#47;tr></p>
+<tr>
+<td align="center" width="5%"><span style="font-family: Arial; font-size: small;">1<&#47;span><&#47;td></p>
+<td align="center" width="9%"><span style="font-family: Arial; font-size: small;">DCD<&#47;span><&#47;td></p>
+<td width="28%"><span style="font-family: Arial; font-size: small;">载波监测Data Carrier Detect<&#47;span><&#47;td></p>
+<td align="center" width="4%"><span style="font-family: Arial; font-size: small;">1<&#47;span><&#47;td></p>
+<td align="center" width="8%"><span style="font-family: Arial; font-size: small;">DCD<&#47;span><&#47;td></p>
+<td width="27%"><span style="font-family: Arial; font-size: small;">Data Carrier Detect<&#47;span><&#47;td><br />
+<&#47;tr></p>
+<tr>
+<td align="center" width="5%"><span style="font-family: Arial; font-size: small;">2<&#47;span><&#47;td></p>
+<td align="center" width="9%"><span style="font-family: Arial; font-size: small;">RxD<&#47;span><&#47;td></p>
+<td width="28%"><span style="font-family: Arial; font-size: small;">接收Receive Data<&#47;span><&#47;td></p>
+<td align="center" width="4%"><span style="font-family: Arial; font-size: small;">2<&#47;span><&#47;td></p>
+<td align="center" width="8%"><span style="font-family: Arial; font-size: small;">TxD<&#47;span><&#47;td></p>
+<td width="27%"><span style="font-family: Arial; font-size: small;">Transmit Data<&#47;span><&#47;td><br />
+<&#47;tr></p>
+<tr>
+<td align="center" width="5%"><span style="font-family: Arial; font-size: small;">3<&#47;span><&#47;td></p>
+<td align="center" width="9%"><span style="font-family: Arial; font-size: small;">TxD<&#47;span><&#47;td></p>
+<td width="28%"><span style="font-family: Arial; font-size: small;">发送Transmit Data<&#47;span><&#47;td></p>
+<td align="center" width="4%"><span style="font-family: Arial; font-size: small;">3<&#47;span><&#47;td></p>
+<td align="center" width="8%"><span style="font-family: Arial; font-size: small;">RxD<&#47;span><&#47;td></p>
+<td width="27%"><span style="font-family: Arial; font-size: small;">Receive Data<&#47;span><&#47;td><br />
+<&#47;tr></p>
+<tr>
+<td align="center" width="5%"><span style="font-family: Arial; font-size: small;">4<&#47;span><&#47;td></p>
+<td align="center" width="9%"><span style="font-family: Arial; font-size: small;">DTR<&#47;span><&#47;td></p>
+<td width="28%"><span style="font-family: Arial; font-size: small;">DTE就位，rs232没用,用于通信流控制Data Terminal Ready<&#47;span><&#47;td></p>
+<td align="center" width="4%"><span style="font-family: Arial; font-size: small;">4<&#47;span><&#47;td></p>
+<td align="center" width="8%"><span style="font-family: Arial; font-size: small;">DSR<&#47;span><&#47;td></p>
+<td width="27%"><span style="font-family: Arial; font-size: small;">Data Set Ready<&#47;span><&#47;td><br />
+<&#47;tr></p>
+<tr>
+<td align="center" width="5%"><span style="font-family: Arial; font-size: small;">5<&#47;span><&#47;td></p>
+<td align="center" width="9%"><span style="font-family: Arial; font-size: small;">GND<&#47;span><&#47;td></p>
+<td width="28%"><span style="font-family: Arial; font-size: small;">接地Ground (Signal)<&#47;span><&#47;td></p>
+<td align="center" width="4%"><span style="font-family: Arial; font-size: small;">5<&#47;span><&#47;td></p>
+<td align="center" width="8%"><span style="font-family: Arial; font-size: small;">GND<&#47;span><&#47;td></p>
+<td width="27%"><span style="font-family: Arial; font-size: small;">Ground (Signal)<&#47;span><&#47;td><br />
+<&#47;tr></p>
+<tr>
+<td align="center" width="5%"><span style="font-family: Arial; font-size: small;">6<&#47;span><&#47;td></p>
+<td align="center" width="9%"><span style="font-family: Arial; font-size: small;">DSR<&#47;span><&#47;td></p>
+<td width="28%"><span style="font-family: Arial; font-size: small;">DCE就位，rs232没用,用于通信流控制Data Set Ready<&#47;span><&#47;td></p>
+<td align="center" width="4%"><span style="font-family: Arial; font-size: small;">6<&#47;span><&#47;td></p>
+<td align="center" width="8%"><span style="font-family: Arial; font-size: small;">DTR<&#47;span><&#47;td></p>
+<td width="27%"><span style="font-family: Arial; font-size: small;">Data Terminal Ready<&#47;span><&#47;td><br />
+<&#47;tr></p>
+<tr>
+<td align="center" width="5%"><span style="font-family: Arial; font-size: small;">7<&#47;span><&#47;td></p>
+<td align="center" width="9%"><span style="font-family: Arial; font-size: small;">RTS<&#47;span><&#47;td></p>
+<td width="28%"><span style="font-family: Arial; font-size: small;">DTE请DCE准备Request to Send<&#47;span><&#47;td></p>
+<td align="center" width="4%"><span style="font-family: Arial; font-size: small;">7<&#47;span><&#47;td></p>
+<td align="center" width="8%"><span style="font-family: Arial; font-size: small;">CTS<&#47;span><&#47;td></p>
+<td width="27%"><span style="font-family: Arial; font-size: small;">Clear to Send<&#47;span><&#47;td><br />
+<&#47;tr></p>
+<tr>
+<td align="center" width="5%"><span style="font-family: Arial; font-size: small;">8<&#47;span><&#47;td></p>
+<td align="center" width="9%"><span style="font-family: Arial; font-size: small;">CTS<&#47;span><&#47;td></p>
+<td width="28%"><span style="font-family: Arial; font-size: small;">DCE接收就位,Clear to Send<&#47;span><&#47;td></p>
+<td align="center" width="4%"><span style="font-family: Arial; font-size: small;">8<&#47;span><&#47;td></p>
+<td align="center" width="8%"><span style="font-family: Arial; font-size: small;">RTS<&#47;span><&#47;td></p>
+<td width="27%"><span style="font-family: Arial; font-size: small;">Request to Send<&#47;span><&#47;td><br />
+<&#47;tr></p>
+<tr>
+<td align="center" width="5%"><span style="font-family: Arial; font-size: small;">9<&#47;span><&#47;td></p>
+<td align="center" width="9%"><span style="font-family: Arial; font-size: small;">RI<&#47;span><&#47;td></p>
+<td width="28%"><span style="font-family: Arial; font-size: small;">Ring Indicator<&#47;span><&#47;td></p>
+<td align="center" width="4%"><span style="font-family: Arial; font-size: small;">9<&#47;span><&#47;td></p>
+<td align="center" width="8%"><span style="font-family: Arial; font-size: small;">RI<&#47;span><&#47;td></p>
+<td width="27%"><span style="font-family: Arial; font-size: small;">Ring Indicator<&#47;span><&#47;td><br />
+<&#47;tr><br />
+<&#47;tbody><br />
+<&#47;table><br />
+&nbsp;</p>
+<h3>RS-232 Signals<&#47;h3><br />
+<img src="http:&#47;&#47;www.commfront.com&#47;images&#47;rs232-waveform1.jpg" alt="RS232 Basics - Waveform" width="400" height="51" border="0" &#47;></p>
+<p><i>Most Significant Bit First<&#47;i> and <i>Least Significant Bit First<&#47;i> are indications on the ordering of the sequence of the bits in the bytes sent over a wire in a transmission protocol or in a stream (e.g. an audio stream).</p>
+<p><i>Most Significant Bit First<&#47;i> means that the most significant bit will arrive first: hence e.g. the hexadecimal number<code>0x12<&#47;code>, <code>00010010<&#47;code> in binary representation, will arrive as the sequence <code>0 0 0 1 0 0 1 0<&#47;code> .</p>
+<p><i>Least Significant Bit First<&#47;i> means that the least significant bit will arrive first: hence e.g. the same hexadecimal number <code>0x12<&#47;code>, again <code>00010010<&#47;code> in binary representation, will arrive as the (reversed) sequence <code>0 1 0 0 1 0 0 0<&#47;code>.</p>
+<p><a href="http:&#47;&#47;www.commfront.com&#47;232Analyzer.zip" target="_blank">下载调试工具<&#47;a></p>

@@ -1,0 +1,85 @@
+---
+layout: post
+status: publish
+published: true
+title: mysql cheat-sheet
+author:
+  display_name: wordpress
+  login: wordpress
+  email: pjsong3101@163.com
+  url: ''
+author_login: wordpress
+author_email: pjsong3101@163.com
+wordpress_id: 97
+wordpress_url: http://oursmedia.net/wordpress/?p=97
+date: '2015-12-17 00:32:57 +0000'
+date_gmt: '2015-12-16 16:32:57 +0000'
+categories:
+- 实施笔记
+tags:
+- mysql
+- configuration
+- database
+comments:
+- id: 24
+  author: wordpress
+  author_email: pjsong3101@163.com
+  author_url: ''
+  date: '2016-03-12 14:45:43 +0000'
+  date_gmt: '2016-03-12 06:45:43 +0000'
+  content: "http:&#47;&#47;dev.mysql.com&#47;doc&#47;refman&#47;5.7&#47;en&#47;windows-start-service.html\r\nwindows下安装服务\r\n1，停止mysql\r\n\"C:\\Program
+    Files\\MySQL\\MySQL Server 5.7\\bin\\mysqladmin\"          -u root shutdown\r\n2，C:\\>
+    \"C:\\Program Files\\MySQL\\MySQL Server 5.7\\bin\\mysqld\" --install"
+- id: 25
+  author: wordpress
+  author_email: pjsong3101@163.com
+  author_url: ''
+  date: '2016-03-12 14:49:03 +0000'
+  date_gmt: '2016-03-12 06:49:03 +0000'
+  content: net start mysql
+- id: 26
+  author: wordpress
+  author_email: pjsong3101@163.com
+  author_url: ''
+  date: '2016-03-12 16:26:37 +0000'
+  date_gmt: '2016-03-12 08:26:37 +0000'
+  content: "windows下操作\r\nnet start mysql\r\nsc delete mysql\r\n\r\nmy.ini\r\ncharacter-set-server=utf8"
+---
+<p><strong>1,安装<&#47;strong><br />
+yum install mysql mysql-server<br />
+vi &#47;etc&#47;my.cnf<br />
+append<br />
+character-set-server=utf8<br />
+&#47;&#47; default-character-set=utf8 troubles in windows;<br />
+<strong>2,安全<&#47;strong><br />
+1, <a href="https:&#47;&#47;dev.mysql.com&#47;doc&#47;refman&#47;5.0&#47;en&#47;default-privileges.html" target="_blank">进入<&#47;a>缺省安全设置参考<br />
+2, <a href="http:&#47;&#47;www.greensql.com&#47;content&#47;mysql-security-best-practices-hardening-mysql-tips" target="_blank">进入<&#47;a>其他安全建议<br />
+#To restrict MySQL from opening a network socket,disables the initiation of networking during MySQL startup<br />
+skip-networking<br />
+#Another possible solution is to force MySQL to listen only to the localhost<br />
+#bind-address=127.0.0.1<br />
+<strong>3,root用户上密码<&#47;strong><br />
+select user,host, password from mysql.user;<br />
+UPDATE mysql.user SET Password = PASSWORD('samplePassword') WHERE User = 'root';<br />
+FLUSH PRIVILEGES;<br />
+DROP USER ''@'LOCALHOST';<br />
+DROP USER ''@'domain.name';<br />
+DELETE FROM mysql.db WHERE Db LIKE 'test%';<br />
+DROP DATABASE test;<br />
+<strong>4,远程连接并使用mypassword作为密码<&#47;strong><br />
+CREATE USER 'remote'@'%' IDENTIFIED BY 'samplePassword';<br />
+GRANT ALL PRIVILEGES ON *.* TO 'remote'@'%' IDENTIFIED BY 'samplePassword' WITH GRANT OPTION;<br />
+flush privileges;<br />
+<strong>5,换密码<&#47;strong><br />
+<a href="https:&#47;&#47;dev.mysql.com&#47;doc&#47;refman&#47;5.0&#47;en&#47;resetting-permissions.html" target="_blank">进入<&#47;a>官方指引。<br />
+1, service mysqld stop<br />
+2, &#47;usr&#47;bin&#47;mysql_safe --skip-grant-tables;<br />
+3, set password for 'root'@'localhost' = PASSWORD('samplePassword');<br />
+4,mysqladmin shutdown<br />
+5,service mysqld start</p>
+<p><strong>6,维护<&#47;strong><br />
+backup:<br />
+mysqldump -u用户名 -p密码 &ndash;default-character-set=编码 数据库名 > 文件名.sql<br />
+restore:<br />
+mysql -u新的用户名 -p密码 新数据库名 < 数据库文件名.sql<br />
+source d:\wcnc_db.sql </p>

@@ -1,0 +1,78 @@
+---
+layout: post
+status: publish
+published: true
+title: vagrant and docker
+author:
+  display_name: wordpress
+  login: wordpress
+  email: pjsong3101@163.com
+  url: ''
+author_login: wordpress
+author_email: pjsong3101@163.com
+wordpress_id: 177
+wordpress_url: http://oursmedia.net/wordpress/?p=177
+date: '2016-05-28 21:28:05 +0000'
+date_gmt: '2016-05-28 13:28:05 +0000'
+categories:
+- 实施笔记
+tags: []
+comments: []
+---
+<p>vagrant<a href="https:&#47;&#47;www.vagrantup.com&#47;docs&#47;getting-started&#47;" target="_blank">参考<&#47;a></p>
+<p>1, 下载 https:&#47;&#47;www.vagrantup.com&#47;downloads.html</p>
+<p>2，下载https:&#47;&#47;www.virtualbox.org&#47;wiki&#47;Downloads</p>
+<p>3, 新建并进入目录c:\work\vagrant\test</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>4，使用https:&#47;&#47;vagrantcloud.com&#47;discover&#47;featured来定位自己需要的环境</p>
+<hr &#47;>
+<p>&nbsp;</p>
+<p><strong>docker<&#47;strong></p>
+<p><a href="https:&#47;&#47;docs.docker.com&#47;machine&#47;overview&#47;">dockerMachine<&#47;a>&nbsp; 用于在虚拟机上安装dockerEngine的工具。并用docker-machine命令来管理虚拟机。这个虚拟主机可以是本地，也可以是远程，命令行可以随时进行host的切换。比如：切换到名字叫default的主机：docker-machine env default,并按照提示进行设置。(env是命令)</p>
+<p><a href="https:&#47;&#47;docs.docker.com&#47;engine&#47;installation&#47;windows&#47;" target="_blank">运行docker<&#47;a>，常用命令：</p>
+<p>安装完成docker-toolbox之后，启动docker quicks tart</p>
+<p><a href="https:&#47;&#47;docs.docker.com&#47;machine&#47;drivers&#47;virtualbox&#47;" target="_blank">运行virtualBox<&#47;a>&nbsp;创建虚拟主机 (不要主动点virtualBox创建default主机，使用docker-machine创建)</p>
+<p>docker-machine create --driver virtualBox default</p>
+<hr &#47;>
+<p>&nbsp;</p>
+<p><strong>运行helloworld<&#47;strong>(先退出当前会话，docker info检查可以连接到虚拟主机的daemon)</p>
+<p>docker run hello-world</p>
+<p>docker运行步骤：</p>
+<p>1,client通知Docker daemon;</p>
+<p>2, daemon 本地找不到img, 就从docker-hub中找到这个img并pull下来</p>
+<p>3,daemon根据该img创建新的容器，并用容器运行程序，输出结果。</p>
+<p>4,daemon把输出结果返回给client.</p>
+<hr &#47;>
+<p><strong><a href="https:&#47;&#47;docs.docker.com&#47;machine&#47;get-started&#47;" target="_blank">其他命令<&#47;a><&#47;strong></p>
+<p>docker-machine ls</p>
+<p>docker run --help</p>
+<p>docker run -d -p 8000:80 nginx</p>
+<p>curl http:&#47;&#47;192.168.99.100:8000</p>
+<p>docker-machine start default</p>
+<p>&nbsp;</p>
+<p><a href="http:&#47;&#47;devbandit.com&#47;2015&#47;05&#47;29&#47;vagrant-and-docker.html" target="_blank">vagrant+docker<&#47;a></p>
+<hr &#47;>
+<p>&nbsp;</p>
+<p>docker+nginx</p>
+<p>images, ps -a, version, run --help,</p>
+<p>run -d -p 8000:80 nginx</p>
+<p>https:&#47;&#47;www.nginx.com&#47;blog&#47;deploying-nginx-nginx-plus-docker&#47;</p>
+<p><strong><a href="https:&#47;&#47;www.nginx.com&#47;blog&#47;deploying-nginx-nginx-plus-docker&#47;">docker run --name mynginx1 -P -d nginx \<&#47;a><&#47;strong></p>
+<p><strong>docker run --name mynginx2 -v &#47;var&#47;www:&#47;usr&#47;share&#47;nginx&#47;html:ro \ -v &#47;var&#47;nginx&#47;conf:&#47;etc&#47;nginx:ro -P -d nginx<&#47;strong></p>
+<p>&nbsp;</p>
+<p><a href="https:&#47;&#47;docs.docker.com&#47;machine&#47;get-started-cloud&#47;">docker-machine<&#47;a></p>
+<p>$ docker-machine <span class="hljs-keyword">create<&#47;span> <span class="hljs-comment">--driver digitalocean --digitalocean-access-token xxxxx docker-sandbox<&#47;span></p>
+<hr &#47;>
+<p>&nbsp;</p>
+<p><a href="https:&#47;&#47;www.digitalocean.com&#47;community&#47;tutorials&#47;how-to-run-nginx-in-a-docker-container-on-ubuntu-14-04">docker+nginx<&#47;a></p>
+<p>nginxRef&nbsp;<a href="https:&#47;&#47;www.nginx.com&#47;blog&#47;deploying-nginx-nginx-plus-docker&#47;">https:&#47;&#47;www.nginx.com&#47;blog&#47;deploying-nginx-nginx-plus-docker&#47;<&#47;a></p>
+<hr &#47;>
+<p><a href="https:&#47;&#47;hub.docker.com&#47;_&#47;mysql&#47;" target="_blank">Mysql<&#47;a></p>
+<p>docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:tag</p>
+<p>docker exec -it some-mysql bash进入container shell.</p>
+<p>(<a href="http:&#47;&#47;stackoverflow.com&#47;questions&#47;30960686&#47;difference-between-docker-attach-and-docker-exec" target="_blank">exec新启动bash并进入,attach进入容器<&#47;a>if the docker container was started using <code>&#47;bin&#47;bash<&#47;code> command, you can access it using attach, if not then you need to <em>execute<&#47;em> the command to create a bash instance inside the container using <code>exec<&#47;code>)</p>
+<hr &#47;>
+<p>&nbsp;</p>
+<p><a href="https:&#47;&#47;www.digitalocean.com&#47;community&#47;tutorials&#47;docker-explained-how-to-containerize-python-web-applications" target="_blank">python<&#47;a></p>
+<p>&nbsp;</p>

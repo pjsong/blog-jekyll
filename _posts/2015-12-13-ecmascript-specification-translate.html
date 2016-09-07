@@ -1,0 +1,148 @@
+---
+layout: post
+status: publish
+published: true
+title: ECMAScript 规范--关键概念翻译
+author:
+  display_name: wordpress
+  login: wordpress
+  email: pjsong3101@163.com
+  url: ''
+author_login: wordpress
+author_email: pjsong3101@163.com
+wordpress_id: 75
+wordpress_url: http://oursmedia.net/wordpress/?p=75
+date: '2015-12-13 00:31:05 +0000'
+date_gmt: '2015-12-12 16:31:05 +0000'
+categories:
+- 翻译文章
+tags: []
+comments: []
+---
+<p>这些都是很好的肉，说实话。我看不到网上有这么好的肉----会吃的人有福。<br />
+原文较老，04年的版本，但是，这些确是ECMAScript的本质，本质没有变。<a href="http:&#47;&#47;bclary.com&#47;2004&#47;11&#47;07&#47;#a-10" target="_blank">点击这里<&#47;a>进入原文。<br />
+<a href="http:&#47;&#47;www.ecma-international.org&#47;ecma-262&#47;5.1&#47;" target="_blank">点击<&#47;a>进入新版点的规范说明：<br />
+<a href="https:&#47;&#47;developer.mozilla.org&#47;zh-CN&#47;docs&#47;Web&#47;JavaScript&#47;Introduction_to_Object-Oriented_JavaScript" target="_blank">点击这里进入<&#47;a>好用的教程</p>
+<p><strong>1，ECMAScript总揽<&#47;strong>：<br />
+ECMAScript这里的定义，并不是一个能够自给自足的运算语言。实际上，这个规范里没有提供关于外部数据输入和运算结果输出的规范。而是，我们期待，一个ECMAScript程序的运行环境不仅要提供这些对象，和规范里所说的这些设施，还要提供一些环境特定的对象，这些特定对象超出了本规范的范围。当然，这里还是要说一些ECMAScript程序本身可以访问属性。<br />
+脚本语言是用来操作，定制，和自动化现有系统的一些设施。这样的系统里，通过用户界面，有用的功能都有了，脚本语言是一个把这些功能暴露给程序控制的机制。通过这种方式，我们就说这个系统提供了对象和设施的宿主环境，这个环境有胜任脚本语言的能力。脚本语言就是给专业和非专业的程序员用的。为了方便非专业程序员，语言的一些方面没有搞的非常严格。<br />
+ECMAScript最初设计，是要作为Web脚本语言。可以为各种宿主环境提供脚本的能力。因此便有了本文的核心脚本语言，而不是某个特定宿主环境的。</p>
+<p><strong>2，语言总揽：<&#47;strong><br />
+什么是她的面向对象：基本语言和设施都有对象提供。一个程序就是许多相互通信的对象构成。一个对象是一个无顺序的属性property集合。每个property属性有0到若干特性Attribute构成。Attribute用来确定每个属性怎么用。比如设置了某个property的ReadOnly特性，那些任何代码想改变这个property的值都是无效的。<strong>属性是一个包含其他对象，原型值(注意是&ldquo;值&rdquo;)，和方法的容器<&#47;strong>。原型值有Undefined,Null,Boolean,Number,String类型，那么对象就是剩下的内置类型Object的成员了，方法就是通过property关联到对象的一个function了。<br />
+ECMAScript定义了内置对象的一个集合，形成了ECMAScript实体的定义。这些内置对象有Object对象，Function对象，Array对象，String对象，Boolean，Number，Math，Date，RegExp，一系列的Error对象。<br />
+同时，还定义了内置的操作符，严格说是函数或者方法，一元操作符，multiplicative(理解为复合操作符吧，类似于中学的复合函数)操作符，加法，位，关系，等价，二进制位，二进制逻辑，赋值，冒号等等。<br />
+ECMAScript句法想学Java，但相对没那么严格，比如变量可以没有类型，类型可以没有属性，函数也不要先声明再使用。</p>
+<p><strong>3，对象<&#47;strong><br />
+ECMAScript 没有C++,Java中标准类的概念，他只是支持能够创建对象的构子constructor，这些构子通过执行一些代码来创建并分配对象的存储空间,初始化他们的属性值.构子都是对象，对象不一定是构子。每个构子都有ProtoType属性，实现继承prototype-based inheritance和属性共享。对象都是通过在new表达式中用构子来创建。比如new String("A String")创建一个String对象.不用new表达式来触发构子时，就看构子本身比如String("A String") 就产生一个原型值，而不是一个对象.</p>
+<p>prototype-based inheritance继承：每个构子都关联了一个prototype，每个由此创建的对象都有一个隐含的到这个prototype的引用。这个引用叫做对象的prototype.更进一步，一个prototype可以有一个非空的到自身prototype的隐含引用，由此递归下去，这就是prototype chain，prototype链。 当一个引用指向某个对象中的property，那么这个引用将指向在prototype链中第一个包含此属性名字的对象的属性。换个说法，先检查前面提到提到的第一个对象是否包含这个属性，如果有，这个引用就指向它，没有，就看这个对象的prototype，由此一直检查下去。</p>
+<p>在基于类的面向对象语言里，状态由实例负责，方法由类来负责，继承也只是结构和行为上的继承。在ECMAScript，状态和方法都是对象来负责的。结构行为状态都被继承。</p>
+<p>所有的对象，如果没有直接包含某个属性，而他们的prototype包含了，会共享这个属性和值。图形展示如下：<br />
+<img class="alignnone" src="http:&#47;&#47;bclary.com&#47;2004&#47;11&#47;07&#47;figure-1.gif" alt="" width="612" height="323" &#47;></p>
+<p>CF是一个构子(当然也是一个对象)，new了五个对象CF1...CF5,每个对象包含了q1和q2的属性。构子CF有自身有两个属性P1和P2，对于五个对象来说是不可见的。CFP中CFP1的属性由五个对象共享(CF不能共享),因为，CFP中隐含的prototype链中发现的任何属性，都没有q1,q2,或CFP1。注意，CF和CFP之间没有隐含prototype连接。</p>
+<p>不同于基于类的面向对象语言,EMCAScript可以直接给属性赋值来动态添加属性到对象中，这就意味着，构子并不需要给构造的对象属性命名或者赋值。在上面的图标中，你可以通过给CFP中的属性赋一个新值，来为五个对象添加一个新的共享属性。</p>
+<p><strong>4,概念：<&#47;strong><br />
+type：值的集合。<br />
+Primitive Value：Undefined, Null, Boolean, Number, String这几种类型的成员，语言规范中低级数据表示。<br />
+Object：Object类型的成员。就是一个无序的属性集合。每个属性可以包含原型值，对象，函数。存储在属性中的函数叫方法。<br />
+Constructor：创建和初始化对象的Function类型的对象。每个构子都关联一个prototype来实现继承和属性共享。<br />
+Prototype：用来实现结构，状态，行为继承的对象。当构子创建一个对象，这个对象就隐含的引用了这个构子所关联的prototype，来实现解析属性引用的目标。构子关联的prototype可以用程序表达式constructor.prototype来引用，所有增加到prototype的属性将被对象所共享，因为所有的对象都共享这个prototype。<br />
+Native Object：ECMAScript实现的，独立于宿主环境的对象。本规范定义了一些标准的NativeObject。有些是内置的，有些通过执行ECMAScript程序的过程中构建。<br />
+Built-in Object：ECMAScript实现的，独立于宿主环境的对象。在ECMAScript程序启动时就有了。每个Build-in对象都是一个Native Object。<br />
+Host Object：由宿主环境提供，来完成ECMAScript程序的执行环境。任何对象，不是Native对象，就是Host对象。<br />
+Undefined Value：原型值，没有赋值的变量就是这个值。<br />
+Undefined Type：Undefined Value的类型。<br />
+Null Value：原型值，null，空，不存在的引用。<br />
+Null Type：Null Value的类型。<br />
+Boolean Value：Boolean 类型的成员，true或者false。<br />
+Boolean Type：由两个值组成，true和false，是一个逻辑实体。<br />
+Boolean Object：Object的成员，内置对象的实例。由new表达式创建，该对象有个隐含的boolean属性,可强制转换为boolean值。<br />
+String Value：String类型的成员，有限有序的16位无符号整形值构成。<br />
+String Type：所有String Value的集合。<br />
+String Object：Object的成员，内置对象的实例。由new表达式草创建，该对象有个隐含的string属性，可通过将构子作为函数来调用，转换为String的值。<br />
+Number：跟String类似。<br />
+Infinity：原始值，正向五穷，Number类型。<br />
+NaN：非数字，Number类型。</p>
+<p>引用类型：Reference Type<br />
+内部类型，非语言的类型。规范中定义这个词完全是为了说明的需要，ECMAScript的实现，必须像本文中描述的那样在引用上操作。不过引用类型的值仅用来表示一个表达式的立即数结果，不能作为变量或者属性来存储。<br />
+Reference Type用来解释一些操作符比如赋值，delete, typeof的行为。比如说赋值，左操作数就将生成一个引用。赋值的行为也可以通过对操作符的左操作数作句法分析来解释，但有个难点就是，函数调用允许返回一个引用，这主要是因为宿主对象。规范中没有返回引用的函数，也没有提供可供用户定义的函数返回引用的功能。规范不采用句法分析的另外一个原因是，说起来会又长又难，影响规范的各个部分。<br />
+引用类型的另外一个用处，是解释怎么确定函数调用中this的值。<br />
+引用Reference说的是引用一个对象的属性，包含两个部分：基础对象，属性名称。规范中用一下两个抽象的操作来访问引用的组成部分：GetBase(V)，返回引用V的base对象，GetPropertyName(V)返回引用V的属性名称。<br />
+其它类似还有List Type，Completion Type...</p>
+<p><strong>5,执行上下文<&#47;strong><br />
+当控制转给给ECMAScript的可执行代码时，控制就进入了一个执行上下文。活跃的执行上下文逻辑上形成一个堆栈。这个堆栈的顶层，就是正在运行的执行上下文。<br />
+定义：函数对象Function Object。<br />
+两种：1，由源代码中通过函数声明创建的函数，或者通过函数表达式也好，用内置函数作参数也好，动态创建的函数。<br />
+2，内部函数，就是语言的内置对象。比如parseInt，Math.exp.实现也可以提供本规范中没有描述的函数。这类函数没有包含ECMAScript语法定义的可执行代码，因此不做讨论。<br />
+可执行代码的类型：<br />
+三种：1，被当成ECMAScript程序的全局性文本。全局性文本不包含作为函数体被解析的部分。<br />
+2，eval代码。提供给内置eval函数的文本。准确说，如果提供给eval函数的参数是一个字符串，他就被当作一个ECMAScript程序，那个触发eval方法的代码，就是那个字符串参数的一部分全局性代码。<br />
+3，被作为函数体被解析的函数代码。<strong>一个函数体内的函数代码，不包含任何作为嵌套函数体来解析的部分<&#47;strong>。函数代码同时也标志，源文本是通过内置的function对象作为构子来提供的。准确地说，提供给function构子的最后一个参数被转换成一个字符串并被当作函数体被对待。如果function构子参数大于一个，除最后一个外，所有的参数都被串成一个字符串，用逗号分开，成为最后一个参数也就是函数体的形式参数列表。用于实例化Function的函数体代码，不包含其作为嵌套函数体被解析的部分。</p>
+<p><strong>6，变量实例化<&#47;strong><br />
+任何执行上下文都与一个变量对象(Variable Object)关联。在源文件声明的变量和函数都是添加为变量对象的属性。对于函数代码，参数添加为变量对象的属性。<br />
+哪一个对象被当作变量对象来用，这些对象的属性又有哪些特征Attribute，依赖于代码的类型，但除此之外的行为都是一样的。当进入一个执行上下文之后，属性按照以下顺序绑定到变量对象：<br />
+1，函数代码：对每一个形式参数，在变量对象上创建一个属性，属性的名字就是标志符Identifier,Attribute由代码类型决定。如果调用提供的参数比形式参数少，多出的形式参数值就是undefined;如果有两个或者以上的形式参数同名，这样也就是变量对象的同一个属性，那对应的属性的属性值就是该名字参数的最后一个参数的值。如果调用方没有提供最后一个参数的值，那么对应属性的值就是undefined.<br />
+2,函数声明。按照源文件中的顺序，在变量对象上创建一个属性，属性的名字就是函数声明的标志符，属性的值就是创建函数对象返回的结果（在原文13节叙述）。Attribute由代码类型决定。如果变量对象已经有了这个属性，则原属性和Attribute被替换。语义上，这个步骤必须在创建形式参数列表之后。<br />
+3，变量声明VariableDeclaration 或者VariableDeclarationNotIn。创建变量对象的一个属性，名字是标志符，值是undefined,Attribute根据代码类型决定。如果对象属性已经有了这个属性名称，那这个属性名称的值和attribute保持不变。语义上这个步骤跟在函数代码，函数声明之后。要注意，如果一个变量名字与一个已经存在的函数名称或者形式参数同名，那这个变量将不会干扰已有的属性。</p>
+<p><strong>7，作用域链和标志符解析<&#47;strong><br />
+任何执行上下文都与作用域链相关联。一个作用域链，就是在定位(evaluate)一个标志符时，被搜索的对象列表。当控制进入执行上下文，作用域链就被创建了，并且装入了一些初始化了的对象。在执行上下文里面执行时，作用域链受到with statement和catch子句的影响。<br />
+执行时，句法生成原始表达式，标志符的定位Evaluation算法如下：<br />
+1，作用域链中的下一个对象，如果没有，跳到第5步。<br />
+2，调用第1步结果的HasProperty方法，把标志符作为属性名传入。<br />
+3，如果第2步返回true,返回一个Reference类型的值，base object就是第一步的结果，property name就是标志符。<br />
+4，重复第1步。<br />
+5，返回一个Reference类型的值，base object是null，property name就是标志符。<br />
+因此，定位标志符返回总是一个Reference类型的值，其member name部分就等于标志符字符串。</p>
+<p>8全局对象。<br />
+有一个唯一的全局对象。在控制进入执行上下文之前就创建了。起始全局对象有如下属性：<br />
+1，内置对象比如Math，String，Date，parseInt，这些属性都有attribute.<br />
+2, 宿主定义的属性，可能包含一个属性，其值就是全局对象。比如HTML的文档对象模型里面，全局对象的windows属性的值就是这个全局对象。<br />
+当控制进入执行上下文，ECMAScript的代码被执行，可能有更多的属性添加到全局对象，其初始属性可能会改变。</p>
+<p><strong>激活对象Activation Object。<&#47;strong><br />
+当控制进入一个函数代码的上下文时，会创建一个叫做激活对象的对象，并且与执行上下文关联。这个激活对象会初始化一个名字为arguments，attributes为dontDelete的属性。属性的初始化值就是下面描述的arguments对象。<br />
+这个激活对象接着用作变量对象，以实现变量初始化。<br />
+激活对象纯粹是一个规范的机制。ECMAScript程序不可能访问激活对象，它可以访问激活对象的成员，但不是激活对象自身。当调用操作应用到某个引用的值，这个引用值的baseObject是一个激活对象，null就是这个调用的this值被返回。</p>
+<p>This值。每一个活跃的上下文都有一个this值与之关联。这个this值依赖于调用者和代码类型。当控制进入执行上下文时决定。与执行上下文关联的this值是不变的。</p>
+<p>Arguments Object，<strong>Argument对象。<&#47;strong><br />
+当控制进入执行上下文中函数代码，argument对象被创建，且按照如下规则初始化：<br />
+1，其内部的prototype属性，就是原始的Object类型的prototype object.即Object.prototype<br />
+2，创建callee属性和属性attribute,这个属性的初始值就是被执行的Function对象，这样匿名函数就可以递归使用。<br />
+3，创建lengh属性和属性attribute,属性的初始值就是调用这提供的实际参数值的个数。<br />
+4，对小于length的每个非负整数代表的参数arg，创建一个名字为toString[arg]的属性和attribute，这个属性的实际值就是调用者实际参数的值。第一个实际参数对应arg=0，如果arg比形式参数少，这个属性就与激活对象对应的属性共享值。这意味着，改变这个属性的值也改变了激活对象对应的属性值，反之亦然。</p>
+<p>进入一个执行上下文：<br />
+每次一个函数或者构子的调用，都会进入一个执行上下文。即使函数递归调用自身。每一个返回跳出执行上下文。抛出的异常如果没有抓住，也会跳出一个，或者多个执行上下文。</p>
+<p>每次控制进入一个执行上下文，作用域链就被创建且初始化，变量也被初始化，this值也就定了。<br />
+这些初始化和this值得确定，依赖于所进入的代码的类型。</p>
+<p>当进入全局代码类型：<br />
+1，作用域链的创建和初始化就是为了包含一个全局对象。<br />
+2，变量用全局对象作为变量对象，来进行初始化，并使用属性attribute{DontDelete}<br />
+当进入Eval代码：<br />
+先前活跃执行上下文，或者称作调用上下文，被用来确定作用域链，变量对象，和this的值。<br />
+1，作用域链使用调用上下文作用域链同样的对象和顺序。包括调用上下文用with和catch加入的属性。<br />
+2，变量初始化使用调用上下文的变量对象，空的属性attribute.<br />
+3, this取值同调用上下文的this值<br />
+如果没有调用上下文，则按照全局代码类型来处理。<br />
+当进入函数代码：<br />
+作用域链的初始化用来包含激活对象，激活对象后面紧跟Function对象的[[scope]]属性里面的作用域链中的对象。<br />
+对象初始化使用激活对象作为变量对象，使用属性attribute{DontDelete}<br />
+调用者提供this值，如果这个this值不是一个对象(比如，注意null不是对象)，那么这个this值就是全局对象。</p>
+<p>函数定义：<br />
+函数声明function Identifier ( FormalParameterListopt ){ FunctionBody }的处理：<br />
+1，根据原文13.2创建新的函数对象，把运行时执行上下文的作用域链作为作用域传入。<br />
+2，根据原文10.1.3创建当前变量对象的属性，名字是标志符，值是Result[1]。<br />
+函数表达式function ( FormalParameterListopt ){ FunctionBody }的处理<br />
+1，同函数声明第一步<br />
+2，返回Result[1]<br />
+函数表达式function Identifier ( FormalParameterListopt ){ FunctionBody }的处理：<br />
+1，如同new Object()一样创建一个新对象。<br />
+2，把Result[1]加到作用域链的最前面。<br />
+3，根据原文13.2创建新的函数对象，把运行时执行上下文作用域链作为作用域传入。<br />
+4，在Result[1]对象创建属性，属性名字就是标志符，值是Result[3]<br />
+5, 把Result[1]从作用域最前面移走.<br />
+6，返回Result[3].</p>
+<p>注意：函数表达式的标志符可以在函数体里面引用，以便递归调用。不过，与函数声明不同，函数表达式的标志符，不能够从作用域里面引用，也不影响表达式的作用域。<br />
+<strong>[译者注：比如var x=function y(p){xxx;}就是一个函数表达式例子，标志符y不能够从作用域里面引用]<&#47;strong></p>
+<p>函数体的处理：<br />
+1，先处理函数声明元素，<br />
+2，处理元素。<br />
+3，返回Result[2]</p>
+<p>注意：[[属性比如scope]]表示内部属性，internal properties, 本身用于解释ECMAScript的实现，本身不是语言的一部分。</p>

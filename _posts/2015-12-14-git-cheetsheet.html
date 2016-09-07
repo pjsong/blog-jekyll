@@ -1,0 +1,77 @@
+---
+layout: post
+status: publish
+published: true
+title: git 命令cheetsheet
+author:
+  display_name: wordpress
+  login: wordpress
+  email: pjsong3101@163.com
+  url: ''
+author_login: wordpress
+author_email: pjsong3101@163.com
+wordpress_id: 93
+wordpress_url: http://oursmedia.net/wordpress/?p=93
+date: '2015-12-14 00:30:49 +0000'
+date_gmt: '2015-12-13 16:30:49 +0000'
+categories:
+- 实施笔记
+tags: []
+comments: []
+---
+<p>git init [--bare忽略工作目录] [dir创建空目录及目录下仓库]<br />
+git clone [-depth=14:pull down only the last 14 commits] <repo仓库地址> <目标目录><br />
+git config &nbsp;定义用户偏好和仓库的行为等各类配置<br />
+git config user.name <name>定义每次提交的作者名<br />
+git config --global user.email <email>定义每次提交的作者邮箱<br />
+git config --system core.editor <editor> 定义git命令使用的文本编辑器比如VI<br />
+git config --global --edit &nbsp;人工编辑全局配置<br />
+基于单个仓库的配置文件路径<repo>&#47;.git&#47;config<br />
+基于用户的配置文件路径~&#47;.gitconfig<br />
+git系统范围的设置文件路径$(prefix)&#47;etc&#47;gitconfig。优先级别从上到下：仓库优于用户优于系统。<br />
+git add <file||directory>添加到缓存去stagingarea.<br />
+git commit -m '提交说明' 真正一次提交并形成快照。-m：不用打开编辑器直接编辑提交说明。<br />
+git commit -a 直接提交已经进入缓存区的那些文件变更。<br />
+git commit --amend与上次提交合并为一次提交。<br />
+git status 显示工作目录和缓存去的状态。<br />
+git log显示提交记录 -n 3只显示3次提交 --stat一次提交作为一行显示， --oneline 。<br />
+git checkout master 切换，获取分支<br />
+git checkout <commit> <file>获取某个文件切换到某次提交快照<br />
+git checkout <commit> 获取整个工作空间到某次提交<br />
+git revert <commit>:回滚某次提交快照并形成一次新的提交。<br />
+git reset 重置缓存区到最近的一次提交。<file>将文件从缓存区去除，工作区不变。--hard 工作区和缓存区一起重置到某次提交。<br />
+git reset <commit>：直接后退至某次提交并更新缓存区。--hard工作区也一起重置。<br />
+git clean 去掉没有被索引到的文件。常与reset --hard。或者status之后一起使用，干掉那些没有被索引的文件。-n空转，看看那些文件将要被干掉。-f 强力删除否则干不掉，除非作了设置。
+<path>只干某个路径 -df干当前目录， .gitignore里面的不会被删，-xf把ignore里面的也一起干掉。<br />
+git rebase。把分支的基础提交往后移。--abort取消rebase<br />
+git merge --squash master先看冲突再提交</p>
+<p>$ git checkout master<br />
+$ git checkout -b iss53  新建并checkout名字为iss53的分支<br />
+$ git checkout master<br />
+$ git checkout -b hotfix<br />
+$ git checkout master<br />
+$ git merge hotfix<br />
+由于当前 master 分支所指向的提交是你当前提交（有关 hotfix 的提交）的直接上游，所以 Git 只是简单的将指针向前移动（fast-forward）<br />
+$ git branch --no-merged 查看所有包含未合并工作的分支  git branch -d testing删除失败 -D强行删除<br />
+$ git branch分支列表 -v包含最后一次提交信息 --merged已合并的分支</p>
+<p><a href="https:&#47;&#47;git-scm.com&#47;docs&#47;git-remote.html">REMOTE<&#47;a><br />
+git remote 列出你指定的每一个远程服务器的简写，-v，会显示对应的 URL<br />
+git remote show [remote-name] 查看远程仓库<br />
+git remote add <shortname> <url> 添加一个新的远程 Git 仓库，同时指定一个你可以轻松引用的简写<br />
+例如 $ git remote add pb https:&#47;&#47;github.com&#47;paulboone&#47;ticgit<br />
+$ git clone [remote-name] 自动将其添加为远程仓库并默认以 &ldquo;origin&rdquo; 为简写<br />
+$ git fetch [remote-name] 抓取克隆（或上一次抓取）后新推送的所有工作。将数据拉取到你的本地仓库 - 它并不会自动合并或修改你当前的工作git pull [remote-name] 会合并。<br />
+远程仓库的移除与重命名<br />
+$ git remote rename pb paul<br />
+$ git remote rm paul<br />
+$ git push origin master 本地修改推送远程<br />
+$ git remote set-url origin ssh:&#47;&#47;[user]@[new-server-addr]&#47;path&#47;to&#47;[project].git 修改远程地址<br />
+$ git push  <REMOTENAME> <LOCALBRANCHNAME>:<REMOTEBRANCHNAME> push时修改远程分支名为REMOTEBRANCHNAME<br />
+$ git push  <REMOTENAME> <TAGNAME> 仅push一个tag。<br />
+$ git push  <REMOTENAME> --tags push所有的tag<br />
+@ git push  <REMOTENAME> :<BRANCHNAME> 删除远程分支。注意：前面的空格表示push本地的空，也就删除了。<br />
+$git init $git remote add origin ssh:&#47;&#47;[user]@[server-addr]&#47;path&#47;to&#47;[project].git等价于git clone ssh:&#47;&#47;.......<br />
+$git add --all $git commit -a -m 'xxx' $git push -u origin master <a href="http:&#47;&#47;blog.netgloo.com&#47;2015&#47;08&#47;01&#47;common-git-commands&#47;" target="_blank">进入<&#47;a>参考</p>
+<p><a href="https:&#47;&#47;git-scm.com&#47;book&#47;zh&#47;v2&#47;Git-%E5%B7%A5%E5%85%B7-%E5%87%AD%E8%AF%81%E5%AD%98%E5%82%A8">凭证存储<&#47;a><br />
+github pull requests:让你告诉其他人你有push了github库上的变更。pull请求一发出，感兴趣的人可以评审讨论，如果必要push后续的变更。<a href="https:&#47;&#47;help.github.com&#47;articles&#47;using-pull-requests&#47;" target="_blank">进入<&#47;a>参考地址<br />
+Fork Queue：你的项目被别人fork了，而且别人有了新的提交，你想看看别人都干了些啥。这些提交并没有要求你接受。<a href="https:&#47;&#47;github.com&#47;blog&#47;270-the-fork-queue" target="_blank">进入<&#47;a>参考</p>

@@ -1,0 +1,47 @@
+---
+layout: post
+status: publish
+published: true
+title: MD5签名的唯一性问题 与算法
+author:
+  display_name: wordpress
+  login: wordpress
+  email: pjsong3101@163.com
+  url: ''
+author_login: wordpress
+author_email: pjsong3101@163.com
+wordpress_id: 57
+wordpress_url: http://oursmedia.net/wordpress/?p=57
+date: '2015-12-11 14:54:31 +0000'
+date_gmt: '2015-12-11 06:54:31 +0000'
+categories:
+- 翻译文章
+tags:
+- theory
+- MD5
+- signature
+- util
+comments:
+- id: 22
+  author: wordpress
+  author_email: pjsong3101@163.com
+  author_url: ''
+  date: '2015-12-11 20:31:15 +0000'
+  date_gmt: '2015-12-11 12:31:15 +0000'
+  content: 多大的文件能保证100%不会重复? 小于4G,也就是2的32次方，因为这是取模的基数。
+---
+<p><a href="https:&#47;&#47;en.wikipedia.org&#47;wiki&#47;MD5" target="_blank">进入维基来源<&#47;a></p>
+<p>这里翻译算法，这样便清楚什么时候，能够保证其唯一。<br />
+步骤1，把信息打成512位的chunk。就是连续的块，每块512个字节，也就是16个32位的字。<br />
+步骤2，对信息补位，使信息长度能被512整除。补位的规则：信息尾加一位1，然后一直是0，但留下64位，表示原始信息的长度。长度数字为对2的64次方取模。(2的10次方1k，20次方1m，30次方1g，40次方1t，50次方1p，64次方不知道怎么表示，应该还没这么大的文件吧,就算你有，我是取模).</p>
+<p>步骤３，算法主要是在128位上操作，这128位分为四个32位的字（结果就是32位长的串），分别用ABCD表示。<br />
+消息处理包含四个回合，每个回合由16个相似的操作构成。这些操作基于一个非线性函数Ｆ，取模相加，左旋。<br />
+下图展示了一个回合的操作。每轮16＊４轮总共就是６４个操作。</p>
+<p><img class="alignnone" src="https:&#47;&#47;upload.wikimedia.org&#47;wikipedia&#47;commons&#47;thumb&#47;d&#47;d8&#47;MD5.svg&#47;300px-MD5.svg.png" alt="" width="300" height="330" &#47;></p>
+<p><img class="alignnone" src="https:&#47;&#47;upload.wikimedia.org&#47;math&#47;6&#47;9&#47;c&#47;69cdb05ce2b8710bd61e8e6fc5b583a7.png" alt="" width="297" height="108" &#47;></p>
+<p><img class="alignnone" src="https:&#47;&#47;upload.wikimedia.org&#47;math&#47;d&#47;9&#47;6&#47;d96277da48b2e8f86c7268f480a9e87c.png" alt="" width="80" height="16" &#47;>分别代表ＸＯＲ，ＡＮＤ，ＯＲ，ＮＯＴ，也就是异或，与，或，非。</p>
+<p>Ｆ代表非线性函数，每次使用的非线性函数不同。</p>
+<p>Ｍ代表一个３２位的消息块。</p>
+<p>Ｋ代表３２位常量，每次各不相同。</p>
+<p>＜＜＜Ｓ代表Ｓ位置的左位旋转，Ｓ每次各不相同。</p>
+<p><img class="alignnone" src="https:&#47;&#47;upload.wikimedia.org&#47;wikipedia&#47;commons&#47;7&#47;75&#47;Boxplus.png" alt="" width="11" height="11" &#47;>代表和对２的３２次方取模。</p>

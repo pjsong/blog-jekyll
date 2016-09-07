@@ -1,0 +1,49 @@
+---
+layout: post
+status: publish
+published: true
+title: 分布式系统的CAP理论
+author:
+  display_name: wordpress
+  login: wordpress
+  email: pjsong3101@163.com
+  url: ''
+author_login: wordpress
+author_email: pjsong3101@163.com
+wordpress_id: 148
+wordpress_url: http://oursmedia.net/wordpress/?p=148
+date: '2016-01-06 14:43:02 +0000'
+date_gmt: '2016-01-06 06:43:02 +0000'
+categories:
+- 实施笔记
+tags: []
+comments: []
+---
+<p><strong>结论：关键业务读写用AC，纯业务读用CP，其他非业务读，用AP。<&#47;strong></p>
+<p><a href="http:&#47;&#47;ksat.me&#47;a-plain-english-introduction-to-cap-theorem&#47;" target="_blank">来源<&#47;a></p>
+<p>CAP：也称为Brewer's理论，指出：一个分布式计算系统不可能同时做到三点Consistency (all nodes see the same data at the same time)，一致性<i><a title="Availability" href="https:&#47;&#47;en.wikipedia.org&#47;wiki&#47;Availability">Availability<&#47;a><&#47;i> (a guarantee that every request receives a response about whether it succeeded or failed)<i><a class="mw-redirect" title="Network partitioning" href="https:&#47;&#47;en.wikipedia.org&#47;wiki&#47;Network_partitioning">Partition tolerance<&#47;a><&#47;i> (the system continues to operate despite arbitrary partitioning due to network failures)。</p>
+<p>举例说明：</p>
+<p>1，你和你老婆开了个记忆公司，别人打电话让你记下一件事情，然后再打电话来问你。</p>
+<p>这个时候，你一个人上班，所有的事情都记在一个本子上。别人来问，你就查笔记本。慢慢你感觉忙不过来，希望你老婆来帮手。</p>
+<p><strong>一致性问题<&#47;strong>来了：客户打电话问你：我老婆生日是哪天？你一查没有啊，后来才知道，客户告诉你老婆了，要问你老婆才知道。怎么做到你也知道呢？</p>
+<p><strong>解决方案<&#47;strong>：你和你老婆，每一个进来的电话，在结束挂电话之前，都要通知对方也要记一份。</p>
+<p>这个方案引入了<strong>可用性问题<&#47;strong>：有天你老婆病了，不能上班，你也干不了活了。因为你接了电话，不能通知到你老婆那边。</p>
+<p><strong>解决方案<&#47;strong>：我把我当天接到的信息，都发一份到我老婆的邮箱，等她来上班，他就可以从邮箱里面获得哪些信息。</p>
+<p>这里好像非常完美了。但有个前提：你跟你老婆不能吵架。如果你老婆那天怒了fuck，接了的电话<strong>不告诉你<&#47;strong>。这个时候你需要<strong>节点容错partition Tolerance<&#47;strong>。</p>
+<p>&nbsp;</p>
+<p>CAP理论就是说，这三条件你最多只能做到2条。</p>
+<p>上面例子是CA。如果你说，我回答客人的问题不会错，我们有人生病了也能正常开展业务，那么你们两个就不能吵架。从下图可以知道，只有关系数据库系统默认是不吵架的系统。</p>
+<p><strong>实际意义<&#47;strong>：系统怎么会吵架呢？在实际环境中，说的是<strong>网络断开<&#47;strong>了。在现实分布式系统中，网络永远是不可靠的。而关系数据库来说，网络没了，服务就没了。因此，如果你要视网络断开而不见，你就不能用关系数据库。</p>
+<p>&nbsp;</p>
+<p>既然网络绝对不可靠，怎么解决就只剩下两个选择AP，CP，看你要哪个了。</p>
+<p>接下来AP。如果你说，我们任何一个人生病了都可以开展业务，吵架了也开展业务，那你们回答客人的问题，一定会有答不上来的。如果你说，<strong>即使有一定的错误，我的系统也一定要能继续运行，那就是AP了<&#47;strong>。</p>
+<p>&nbsp;</p>
+<p>接下来CP。如果你说，我跟我老婆吵架也能开业，而且我们回答客人的问题也不会出错，那么，你跟你老婆就不能有人生病。Redis，MongoDB,HBase都是默认不生病的系统。<strong>如果你需要原子读写，有问题我就超时或者返回错误，那就是CP了。<&#47;strong></p>
+<p>&nbsp;</p>
+<p>附加说明：在实际的分布式Nosql系统，都有一个跑腿的伙计，当你接到电话，需要通知你老婆的时候，你不必等待你老婆记好了你才挂电话，跑腿的会在后台默默在你老婆的笔记本上记下。</p>
+<p>&nbsp;</p>
+<p><strong>数据系统与CAP<&#47;strong></p>
+<p><img class="alignnone" src="http:&#47;&#47;www.w3resource.com&#47;mongodb&#47;cap-theoram-image.png" alt="" width="671" height="578" &#47;></p>
+<p><strong>数据模型与CAP<&#47;strong></p>
+<p><img class="alignnone" src="http:&#47;&#47;maxivak.com&#47;wp-content&#47;uploads&#47;2011&#47;07&#47;media_httpfarm5static_mevIk.png" alt="" width="1024" height="768" &#47;></p>
+<p>&nbsp;</p>

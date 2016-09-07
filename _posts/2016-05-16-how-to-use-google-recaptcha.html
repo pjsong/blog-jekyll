@@ -1,0 +1,85 @@
+---
+layout: post
+status: publish
+published: true
+title: 使用google recaptcha
+author:
+  display_name: wordpress
+  login: wordpress
+  email: pjsong3101@163.com
+  url: ''
+author_login: wordpress
+author_email: pjsong3101@163.com
+wordpress_id: 173
+wordpress_url: http://oursmedia.net/wordpress/?p=173
+date: '2016-05-16 01:29:52 +0000'
+date_gmt: '2016-05-15 17:29:52 +0000'
+categories:
+- 实施笔记
+tags: []
+comments:
+- id: 29
+  author: wordpress
+  author_email: wordpress@oursmedia.net
+  author_url: ''
+  date: '2016-06-05 02:24:12 +0000'
+  date_gmt: '2016-06-04 18:24:12 +0000'
+  content: (function() {if (!window['___grecaptcha_cfg']) { window['___grecaptcha_cfg']
+    = {}; };if (!window['___grecaptcha_cfg']['render']) { window['___grecaptcha_cfg']['render']
+    = 'onload'; };window['__google_recaptcha_client'] = true;var po = document.createElement('script');
+    po.type = 'text&#47;javascript'; po.async = true;po.src = 'https:&#47;&#47;www.gstatic.com&#47;recaptcha&#47;api2&#47;r20160531110558&#47;recaptcha__zh_cn.js';var
+    s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po,
+    s);})();
+---
+<p>1，<strong>获取SiteKey和secret的API对<&#47;strong>。（<a href="https:&#47;&#47;developers.google.com&#47;recaptcha&#47;docs&#47;start" target="_blank">参考<&#47;a>）</p>
+<p>1.1 &nbsp;前者显示页面组件，后者用于应用和google服务器之间的通信，检查是否正确，使用者需要保密。</p>
+<p>1.2 这个API对对于顶级域名和一级子域名唯一。如果多个顶级域名使用的是一个站点，用一个API对就够了。</p>
+<p>2，<strong><a href="https:&#47;&#47;developers.google.com&#47;recaptcha&#47;docs&#47;display#auto_render" target="_blank">页面放入组件<&#47;a><&#47;strong></p>
+<p>2.1, 自动提交</p>
+<pre class="prettyprint"><span class="tag"><html><&#47;span><span class="pln"><br />
+&nbsp; <&#47;span><span class="tag"><head><&#47;span><span class="pln"><br />
+&nbsp; &nbsp; <&#47;span><span class="tag"><title><&#47;span><span class="pln">reCAPTCHA demo: Simple page<&#47;span><span class="tag"><&#47;title><&#47;span><span class="pln"><br />
+&nbsp; &nbsp; &nbsp;<&#47;span><b><span class="tag"><script<&#47;span> <span class="atn">src<&#47;span><span class="pun">=<&#47;span><span class="atv">"https:&#47;&#47;www.google.com&#47;recaptcha&#47;api.js"<&#47;span> <span class="atn">async<&#47;span> <span class="atn">defer<&#47;span><span class="tag">><&#47;script><&#47;span><&#47;b><span class="pln"><br />
+&nbsp; <&#47;span><span class="tag"><&#47;head><&#47;span><span class="pln"><br />
+&nbsp; <&#47;span><span class="tag"><body><&#47;span><span class="pln"><br />
+&nbsp; &nbsp; <&#47;span><span class="tag"><br />
+<form<&#47;span> <span class="atn">action<&#47;span><span class="pun">=<&#47;span><span class="atv">"?"<&#47;span> <span class="atn">method<&#47;span><span class="pun">=<&#47;span><span class="atv">"POST"<&#47;span><span class="tag">><&#47;span><span class="pln"><br />
+&nbsp; &nbsp; &nbsp; <&#47;span><b><span class="tag">
+<div<&#47;span> <span class="atn">class<&#47;span><span class="pun">=<&#47;span><span class="atv">"g-recaptcha"<&#47;span> <span class="atn">data-sitekey<&#47;span><span class="pun">=<&#47;span><span class="atv">"your_site_key"<&#47;span><span class="tag">><&#47;div><&#47;span><&#47;b><span class="pln"><br />
+&nbsp; &nbsp; &nbsp; <&#47;span><span class="tag"><br&#47;><&#47;span><span class="pln"><br />
+&nbsp; &nbsp; &nbsp; <&#47;span><span class="tag"><input<&#47;span> <span class="atn">type<&#47;span><span class="pun">=<&#47;span><span class="atv">"submit"<&#47;span> <span class="atn">value<&#47;span><span class="pun">=<&#47;span><span class="atv">"Submit"<&#47;span><span class="tag">><&#47;span><span class="pln"><br />
+&nbsp; &nbsp; <&#47;span><span class="tag"><&#47;form><&#47;span><span class="pln"><br />
+&nbsp; <&#47;span><span class="tag"><&#47;body><&#47;span><br />
+<span class="tag"><&#47;html><&#47;span></p>
+<p>3， <a href="https:&#47;&#47;developers.google.com&#47;recaptcha&#47;docs&#47;verify" target="_blank">检查用户响应<&#47;a><br />
+3.1 方法1，用户提交表单时校验<br />
+3.2 方法2，用户输入即校验<br />
+3.3 方法3，如果在g-recaptcha标签属性指定，或者grecaptcha.render方法中的参数指定，作为回调函数的字符串参数来校验。<br />
+post参数<&#47;pre></p>
+<table>
+<tbody>
+<tr>
+<td>secret<&#47;td></p>
+<td>Required. The shared key between your site and ReCAPTCHA.<&#47;td><br />
+<&#47;tr></p>
+<tr>
+<td>response<&#47;td></p>
+<td>Required. The user response token provided by the reCAPTCHA to the user and provided to your site on.<&#47;td><br />
+<&#47;tr></p>
+<tr>
+<td>remoteip<&#47;td></p>
+<td>Optional. The user's IP address.<&#47;td><br />
+<&#47;tr><br />
+<&#47;tbody><br />
+<&#47;table><br />
+&nbsp;</p>
+<p>响应</p>
+<pre class="prettyprint"><span class="pun">{<&#47;span><span class="pln"><br />
+&nbsp; <&#47;span><span class="str">"success"<&#47;span><span class="pun">:<&#47;span> <span class="kwd">true<&#47;span><span class="pun">|<&#47;span><span class="kwd">false<&#47;span><span class="pun">,<&#47;span><span class="pln"><br />
+&nbsp; <&#47;span><span class="str">"challenge_ts"<&#47;span><span class="pun">:<&#47;span><span class="pln"> timestamp<&#47;span><span class="pun">,<&#47;span><span class="pln"> &nbsp;<&#47;span><span class="com">&#47;&#47; timestamp of the challenge load (ISO format yyyy-MM-dd'T'HH:mm:ssZZ)<&#47;span><span class="pln"><br />
+&nbsp; <&#47;span><span class="str">"hostname"<&#47;span><span class="pun">:<&#47;span> <span class="kwd">string<&#47;span><span class="pun">,<&#47;span><span class="pln"> &nbsp; &nbsp; &nbsp; &nbsp; <&#47;span><span class="com">&#47;&#47; the hostname of the site where the reCAPTCHA was solved<&#47;span><span class="pln"><br />
+&nbsp; <&#47;span><span class="str">"error-codes"<&#47;span><span class="pun">:<&#47;span> <span class="pun">[...]<&#47;span><span class="pln"> &nbsp; &nbsp; &nbsp; &nbsp;<&#47;span><span class="com">&#47;&#47; optional<&#47;span><br />
+<span class="pun">}<&#47;span></p>
+<p>4 域名校验<br />
+防止域名失效，可以在高级设定中取消域名检查。带来的风险便是，如果你的key被别人知道，就可以被别人来使用了。</p>
+<p><&#47;pre></p>
